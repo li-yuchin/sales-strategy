@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式B2B銷售策略分析報告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Harmony -->
+    <!-- Application Structure Plan: A dashboard-style SPA with a main navigation bar for the five core playbooks and an overview section. This non-linear structure allows users to freely explore topics of interest. Each playbook section uses interactive elements like clickable diagrams and dynamic charts to break down complex information into digestible parts, enhancing user engagement and understanding over a linear report format. The goal is to transform passive reading into active exploration. -->
+    <!-- Visualization & Content Choices: 
+        - Overview: Donut chart for "Rule of Thirds" to give an immediate, high-level insight into buyer behavior.
+        - Playbook 1 (AI): Interactive bar chart linked to buttons representing sales funnel stages. This allows users to dynamically explore AI's impact, which is more engaging than a static table.
+        - Playbook 2 (Value): Clickable cards for comparing selling methodologies. This simplifies the comparison from Table 3 into a clean, interactive UI.
+        - Playbook 3 (Committee): An interactive diagram made with HTML/CSS representing the "Customized Communication Matrix". This visualizes the concept of targeting different stakeholders more effectively than text.
+        - Playbook 4 (Hybrid): A combination of a simple diagram and key stat callouts to explain the model's structure and importance.
+        - Playbook 5 (Flywheel): A CSS-based visual representation of the LTV > 3x CAC rule and the growth flywheel, making abstract concepts tangible.
+        - Justification: All choices prioritize interaction and visual clarity to make the report's dense information accessible and memorable. All visualizations are created using Chart.js or styled HTML/CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FDFBF8;
+            color: #3D405B;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+        .nav-button.active {
+            color: #3D405B;
+            border-bottom-color: #81B29A;
+        }
+        .nav-button:hover {
+            background-color: #F4F1DE;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-button {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-button.active {
+            background-color: #81B29A;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">企業軟體銷售策略的典範轉移</h1>
+            <p class="mt-4 text-lg text-gray-600">一份給2025年銷售架構師的互動式策略指南</p>
+        </header>
+
+        <nav class="bg-white shadow-md rounded-lg mb-8 sticky top-4 z-10">
+            <div class="flex flex-wrap justify-center items-center">
+                <button class="nav-button p-4 font-semibold text-gray-600" data-target="overview">總覽</button>
+                <button class="nav-button p-4 font-semibold text-gray-600" data-target="playbook1">劇本一: AI賦能</button>
+                <button class="nav-button p-4 font-semibold text-gray-600" data-target="playbook2">劇本二: 價值共創</button>
+                <button class="nav-button p-4 font-semibold text-gray-600" data-target="playbook3">劇本三: 攻克委員會</button>
+                <button class="nav-button p-4 font-semibold text-gray-600" data-target="playbook4">劇本四: 混合樞紐</button>
+                <button class="nav-button p-4 font-semibold text-gray-600" data-target="playbook5">劇本五: 增長飛輪</button>
+            </div>
+        </nav>
+
+        <main id="main-content">
+            <section id="overview" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4 text-[#3D405B]">銷售的未來：從銷售員到架構師</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">B2B軟體採購的版圖已徹底改變。買家變得數位優先、自我導向，並在複雜的採購委員會中運作。這場權力轉移催生了「銷售架構師」的崛起——他們不僅銷售產品，更為客戶的成功建構藍圖。本指南將深入解構構成此新架構的五大革命性銷售劇本。</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold mb-4 text-center">現代買家的「三分法則」偏好</h3>
+                        <p class="text-center text-gray-500 mb-4">在採購旅程的任何階段，買家都均勻分佈在三種互動偏好中。一個成功的策略必須同時滿足這三種需求。</p>
+                        <div class="chart-container h-64 md:h-80">
+                            <canvas id="buyerPreferenceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                         <div class="card p-6 text-center">
+                            <h3 class="text-2xl font-bold text-[#81B29A]">75%</h3>
+                            <p class="text-gray-600">的B2B買家偏好無銷售代表的採購體驗。</p>
+                        </div>
+                        <div class="card p-6 text-center">
+                            <h3 class="text-2xl font-bold text-[#E07A5F]">10個</h3>
+                            <p class="text-gray-600">買家在採購過程中平均使用的互動管道數量。</p>
+                        </div>
+                         <div class="card p-6 text-center">
+                            <h3 class="text-2xl font-bold text-[#3D405B]">90%</h3>
+                            <p class="text-gray-600">的B2B客戶採購旅程始於線上搜尋。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="playbook1" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4 text-[#3D405B]">劇本一: AI賦能的銷售組織</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">AI是增強人類智慧的「副駕」，而非取代者。它旨在將銷售團隊轉變為高效率、數據驅動的「超級業務」，並為未來自主代理的時代做好準備。</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-2 text-center">AI在銷售漏斗中的影響力</h3>
+                    <p class="text-center text-gray-500 mb-6">點擊下方按鈕，探索AI在銷售流程各階段的具體應用與可量化效益。</p>
+                    <div class="flex flex-wrap justify-center gap-2 mb-6">
+                        <button class="ai-stage-btn tab-button px-4 py-2 rounded-full text-sm font-medium bg-gray-200" data-stage="prospecting">潛在客戶開發</button>
+                        <button class="ai-stage-btn tab-button px-4 py-2 rounded-full text-sm font-medium bg-gray-200" data-stage="qualification">資格鑑定</button>
+                        <button class="ai-stage-btn tab-button px-4 py-2 rounded-full text-sm font-medium bg-gray-200" data-stage="proposal">提案與演示</button>
+                        <button class="ai-stage-btn tab-button px-4 py-2 rounded-full text-sm font-medium bg-gray-200" data-stage="negotiation">談判</button>
+                        <button class="ai-stage-btn tab-button px-4 py-2 rounded-full text-sm font-medium bg-gray-200" data-stage="support">成交與支援</button>
+                    </div>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="aiImpactChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="playbook2" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4 text-[#3D405B]">劇本二: 價值共創的勢在必行</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">客戶購買的不是軟體功能，而是可量化的業務成果。銷售對話必須從「功能推銷」提升至「策略夥伴關係」，以可證明的價值來證明價格的合理性。</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card p-6 text-center">
+                        <div class="text-4xl mb-4">낡</div>
+                        <h3 class="text-xl font-bold mb-2">解決方案式銷售</h3>
+                        <p class="text-gray-600"><strong>焦點：</strong>診斷已知問題並匹配產品功能。<br><strong>角色：</strong>問題解決者。<br><strong>弱點：</strong>在買家已完成深入研究時，顯得過時且可能引起反感。</p>
+                    </div>
+                    <div class="card p-6 text-center border-2 border-[#81B29A]">
+                        <div class="text-4xl mb-4">🚀</div>
+                        <h3 class="text-xl font-bold mb-2">價值導向式銷售</h3>
+                        <p class="text-gray-600"><strong>焦點：</strong>量化解決方案能帶來的商業價值和ROI。<br><strong>角色：</strong>商業顧問。<br><strong>弱點：</strong>需要深厚的商業和財務敏銳度，價值量化過程複雜。</p>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <div class="text-4xl mb-4">💡</div>
+                        <h3 class="text-xl font-bold mb-2">洞察式銷售</h3>
+                        <p class="text-gray-600"><strong>焦點：</strong>挑戰客戶的既有觀念，帶來新的見解。<br><strong>角色：</strong>思想領袖/挑戰者。<br><strong>弱點：</strong>風險較高，若洞察不夠深刻或傳遞不當，可能疏遠客戶。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="playbook3" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4 text-[#3D405B]">劇本三: 攻克採購委員會</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">B2B決策是複雜的網絡，平均涉及11名利益相關者。贏得交易意味著贏得整個委員會的共識，這需要透過客製化溝通與培養內部擁護者來實現。</p>
+                </div>
+                <div class="card p-8">
+                    <h3 class="text-xl font-bold mb-6 text-center">客製化溝通矩陣</h3>
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-1/3 flex flex-col gap-4">
+                            <button class="stakeholder-btn tab-button p-4 rounded-lg text-left w-full bg-gray-100" data-stakeholder="cfo">
+                                <span class="font-bold text-lg">財務長 (CFO)</span><br><span class="text-sm">關注ROI與成本</span>
+                            </button>
+                            <button class="stakeholder-btn tab-button p-4 rounded-lg text-left w-full bg-gray-100" data-stakeholder="it">
+                                <span class="font-bold text-lg">IT部門</span><br><span class="text-sm">關注安全與整合</span>
+                            </button>
+                            <button class="stakeholder-btn tab-button p-4 rounded-lg text-left w-full bg-gray-100" data-stakeholder="user">
+                                <span class="font-bold text-lg">使用者</span><br><span class="text-sm">關注效率與易用性</span>
+                            </button>
+                             <button class="stakeholder-btn tab-button p-4 rounded-lg text-left w-full bg-gray-100" data-stakeholder="exec">
+                                <span class="font-bold text-lg">高階主管</span><br><span class="text-sm">關注策略與競爭力</span>
+                            </button>
+                        </div>
+                        <div class="md:w-2/3 bg-blue-50 p-6 rounded-lg flex items-center justify-center">
+                            <div id="stakeholder-info" class="text-gray-700">
+                                <p class="text-center">點擊左側的角色，查看針對性的價值溝通策略。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="playbook4" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4 text-[#3D405B]">劇本四: 混合式銷售樞紐</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">融合無摩擦的數位自助服務與高價值的人性化互動，以滿足現代買家的全通路偏好。這不是「數位或人力」的選擇，而是「數位與人力」的融合。</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold mb-4">混合式模型設計</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-green-50 rounded-lg">
+                                <h4 class="font-bold text-green-800">數位前端 (約佔60%旅程)</h4>
+                                <ul class="list-disc list-inside text-green-700 mt-2">
+                                    <li>清晰透明的資訊與價格</li>
+                                    <li>豐富的內容資產 (案例、評論)</li>
+                                    <li>互動式工具 (線上演示、免費試用)</li>
+                                </ul>
+                            </div>
+                            <div class="p-4 bg-orange-50 rounded-lg">
+                                <h4 class="font-bold text-orange-800">人性化介入 (約佔40%旅程)</h4>
+                                <ul class="list-disc list-inside text-orange-700 mt-2">
+                                    <li>基於高意向行為的觸發式互動</li>
+                                    <li>策略諮詢與客製化演示</li>
+                                    <li>複雜的商業談判</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6 flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl font-bold text-[#E07A5F]">147%</div>
+                        <p class="mt-2 text-lg text-gray-600">被給予自助引導式採購旅程的買家，其<span class="font-bold">購買可能性</span>的提升幅度。</p>
+                        <hr class="my-6 w-1/2">
+                        <div class="text-6xl font-bold text-[#3D405B]">100%</div>
+                        <p class="mt-2 text-lg text-gray-600">的買家希望在採購旅程的<span class="font-bold">至少一部分</span>進行自助服務。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="playbook5" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4 text-[#3D405B]">劇本五: 以客戶成功為核心的增長飛輪</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">成交僅是起點。在SaaS經濟中，真正的利潤來自於客戶的持續成功與擴展，將客戶成功(CS)團隊轉變為營收引擎。</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold mb-4 text-center">SaaS的黃金法則</h3>
+                        <div class="flex items-center justify-center space-x-4 p-6 bg-gray-50 rounded-lg">
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-[#81B29A]">LTV</div>
+                                <div class="text-sm font-medium text-gray-500">客戶終身價值</div>
+                            </div>
+                            <div class="text-4xl font-bold text-gray-400">&gt;</div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-[#E07A5F]">3x CAC</div>
+                                <div class="text-sm font-medium text-gray-500">客戶獲取成本</div>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-center text-gray-600">如果LTV不能顯著高於CAC三倍以上，商業模式便不可持續。高客戶流失率將扼殺公司。</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold mb-4 text-center">客戶成功驅動的增長飛輪</h3>
+                        <div class="relative w-64 h-64 md:w-80 md:h-80 mx-auto">
+                            <div class="absolute inset-0 border-4 border-[#81B29A] rounded-full animate-spin" style="animation-duration: 20s;"></div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#FDFBF8] rounded-full flex items-center justify-center text-center font-bold text-[#3D405B]">增長<br>飛輪</div>
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 -mt-4 text-center">
+                                <div class="bg-[#FDFBF8] px-2 font-semibold">獲取</div>
+                            </div>
+                             <div class="absolute bottom-0 left-1/2 -translate-x-1/2 mb-[-1rem] text-center">
+                                <div class="bg-[#FDFBF8] px-2 font-semibold">擴展</div>
+                            </div>
+                            <div class="absolute top-1/2 right-0 -translate-y-1/2 mr-[-1rem] text-center">
+                                <div class="bg-[#FDFBF8] px-2 font-semibold">實現價值</div>
+                            </div>
+                             <div class="absolute top-1/2 left-0 -translate-y-1/2 ml-[-1rem] text-center">
+                                <div class="bg-[#FDFBF8] px-2 font-semibold">保留</div>
+                            </div>
+                        </div>
+                         <p class="mt-4 text-center text-gray-600">CS團隊產生的數據，是優化整個市場進入策略最寶貴的輸入，形成自我優化的閉環。</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-200">
+            <p class="text-gray-600">轉型的時刻已到。擁抱複雜性，建立一個現代化、一體化、以客戶為中心的銷售組織，成為未來的市場贏家。</p>
+            <p class="text-sm text-gray-400 mt-4">互動式報告 by Gemini</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const contentSections = document.querySelectorAll('.content-section');
+            const aiStageButtons = document.querySelectorAll('.ai-stage-btn');
+            const stakeholderButtons = document.querySelectorAll('.stakeholder-btn');
+            const stakeholderInfo = document.getElementById('stakeholder-info');
+
+            const aiChartData = {
+                prospecting: {
+                    labels: ['潛在客戶數量增加', '點擊率翻倍'],
+                    data: [50, 100],
+                    title: '潛在客戶開發階段效益 (%)'
+                },
+                qualification: {
+                    labels: ['鑑定準確率提高', '線索執行速度加快'],
+                    data: [40, 30],
+                    title: '資格鑑定階段效益 (%)'
+                },
+                proposal: {
+                    labels: ['會議準備時間節省', 'RFP評估時間縮短'],
+                    data: [10, 70],
+                    title: '提案與演示階段效益 (%)'
+                },
+                negotiation: {
+                    labels: ['利潤提升 (透過優化定價)'],
+                    data: [10],
+                    title: '談判階段效益 (%)'
+                },
+                support: {
+                    labels: ['客戶滿意度提升', '培訓成本降低'],
+                    data: [7, 20],
+                    title: '成交與支援階段效益 (%)'
+                }
+            };
+            
+            const stakeholderData = {
+                cfo: {
+                    title: '對財務長 (CFO)',
+                    content: '呈現一份詳細的ROI和TCO分析報告，重點突出財務效益。用數據證明投資的合理性與回報週期。'
+                },
+                it: {
+                    title: '對IT部門',
+                    content: '提供詳盡的安全文檔、API接口說明、整合路線圖和數據合規性證明。解決他們對技術風險和維護性的擔憂。'
+                },
+                user: {
+                    title: '對使用者',
+                    content: '提供互動式的產品演示，專注於展示工作流程的改進和日常效率的提升。讓他們親身體驗產品如何解決痛點。'
+                },
+                exec: {
+                    title: '對高階主管',
+                    content: '溝通內容應聚焦於策略價值、市場差異化，以及如何透過該解決方案實現長期的業務目標與競爭優勢。'
+                }
+            };
+
+            let buyerChart, aiChart;
+
+            function switchTab(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                navButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                document.getElementById(targetId).classList.add('active');
+                document.querySelector(`.nav-button[data-target="${targetId}"]`).classList.add('active');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    switchTab(button.dataset.target);
+                });
+            });
+
+            function createBuyerPreferenceChart() {
+                const ctx = document.getElementById('buyerPreferenceChart').getContext('2d');
+                if (buyerChart) buyerChart.destroy();
+                buyerChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['面對面互動', '遠程溝通', '數位自助服務'],
+                        datasets: [{
+                            label: '買家偏好',
+                            data: [33.3, 33.3, 33.4],
+                            backgroundColor: ['#81B29A', '#F2CC8F', '#E07A5F'],
+                            borderColor: '#FDFBF8',
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: 約 ${context.raw.toFixed(1)}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function updateAiChart(stage) {
+                const ctx = document.getElementById('aiImpactChart').getContext('2d');
+                const chartConfig = aiChartData[stage];
+                
+                aiStageButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if(btn.dataset.stage === stage) {
+                        btn.classList.add('active');
+                    }
+                });
+
+                if (aiChart) {
+                    aiChart.destroy();
+                }
+
+                aiChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartConfig.labels,
+                        datasets: [{
+                            label: '效益提升 (%)',
+                            data: chartConfig.data,
+                            backgroundColor: ['#81B29A', '#F2CC8F', '#E07A5F', '#3D405B', '#8E8D8A'],
+                            borderRadius: 5,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: chartConfig.title,
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '效益提升 (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            aiStageButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    updateAiChart(button.dataset.stage);
+                });
+            });
+            
+            stakeholderButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const stakeholderId = button.dataset.stakeholder;
+                    const data = stakeholderData[stakeholderId];
+                    
+                    stakeholderButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    stakeholderInfo.innerHTML = `
+                        <h4 class="text-xl font-bold mb-2 text-[#3D405B]">${data.title}</h4>
+                        <p>${data.content}</p>
+                    `;
+                });
+            });
+
+            function initialize() {
+                switchTab('overview');
+                createBuyerPreferenceChart();
+                updateAiChart('prospecting');
+                stakeholderButtons[0].click();
+            }
+
+            initialize();
+        });
+    </script>
+</body>
+</html>
