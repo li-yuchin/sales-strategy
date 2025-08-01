@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卓碼資訊 MES BOX 2025 整合銷售戰略計畫</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f4f7f9; /* A light, neutral background */
+            color: #1e293b; /* slate-800 for primary text */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #2563eb; /* blue-600 */
+            border-bottom-color: #2563eb;
+        }
+        .content-section {
+            scroll-margin-top: 80px;
+        }
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            border: 1px solid #e5e7eb;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .quarter-tab {
+            transition: all 0.3s ease;
+        }
+        .quarter-tab.active {
+            background-color: #2563eb;
+            color: white;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            max-width: 300px;
+            margin: auto;
+        }
+        .month-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .grant-status-active { background-color: #16a34a; color: white; }
+        .grant-status-upcoming { background-color: #f59e0b; color: white; }
+        .grant-status-past { background-color: #64748b; color: white; }
+        .details-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <h1 class="text-xl md:text-2xl font-black">MES BOX 2025 整合銷售計畫</h1>
+                <nav class="hidden md:flex items-center space-x-4 lg:space-x-6 text-sm lg:text-base">
+                    <a href="#objective" class="nav-link font-semibold">目標 (O)</a>
+                    <a href="#goals" class="nav-link font-semibold">指標 (G)</a>
+                    <a href="#playbook" class="nav-link font-semibold">戰略手冊 (S)</a>
+                    <a href="#measures" class="nav-link font-semibold">執行方案 (M)</a>
+                    <a href="#risks" class="nav-link font-semibold">風險管理</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <!-- Objective -->
+        <section id="objective" class="content-section text-center mb-16">
+            <div class="card p-8 bg-blue-600 text-white">
+                <h2 class="text-sm font-bold uppercase text-blue-200 tracking-widest">OBJECTIVE (終極目標)</h2>
+                <p class="text-2xl md:text-3xl font-bold mt-4 max-w-4xl mx-auto">
+                    將 MES BOX 定位為台灣中小企業數位轉型的「第一步解決方案」，透過成為其進入智慧製造領域的預設入門選項，獲取決定性的市場領導地位。
+                </p>
+            </div>
+        </section>
+
+        <!-- Goals -->
+        <section id="goals" class="content-section mb-16">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold">具體目標 (Goals)</h2>
+                <p class="text-gray-600 mt-2">由3人業務團隊，達成以下年度量化指標</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="card p-6 text-center">
+                    <p class="text-gray-500">年度總業績</p>
+                    <p class="text-4xl font-extrabold text-green-600 my-2">NT$ <span class="counter" data-target="30000000">0</span></p>
+                </div>
+                <div class="card p-6 text-center">
+                    <p class="text-gray-500">年度總銷售套數</p>
+                    <p class="text-4xl font-extrabold text-blue-600 my-2"><span class="counter" data-target="100">0</span> 套</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <p class="text-gray-500">年度有效商機</p>
+                    <p class="text-4xl font-extrabold text-yellow-600 my-2"><span class="counter" data-target="300">0</span> 件</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <p class="text-gray-500">年度潛在客戶</p>
+                    <p class="text-4xl font-extrabold text-purple-600 my-2"><span class="counter" data-target="1500">0</span> 筆</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg text-center mb-4">業績目標構成</h3>
+                    <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg text-center mb-4">銷售套數目標構成</h3>
+                    <div class="chart-container"><canvas id="unitsChart"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Playbook (Strategies) -->
+        <section id="playbook" class="content-section mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold">戰略手冊 (Strategies)</h2>
+                <p class="max-w-3xl mx-auto text-slate-600 mt-2">我們的成功建立在三大戰略支柱之上，輔以市場洞察與競爭分析。</p>
+            </div>
+
+            <!-- Strategic Pillars -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-center">S1: 精準定位</h3>
+                    <p class="text-center text-gray-600 mb-4">將產品與補助、ESG合規深度綑綁，銷售「賦能工具」而非僅是系統。</p>
+                    <ul class="space-y-3 text-sm">
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>數位轉型第一步：</strong>直擊中小企業「不知、不易、不足」的轉型心魔。</li>
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>政府補助金鑰：</strong>將採購成本重新框架為槓桿政府資金的機會。</li>
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>碳盤查就緒：</strong>為外銷導向客戶提供「未來保障」，滿足綠色供應鏈要求。</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-center">S2: 加速市場進入</h3>
+                    <p class="text-center text-gray-600 mb-4">配合補助時程發動攻勢，鎖定高痛點產業，創造採購緊迫感。</p>
+                     <ul class="space-y-3 text-sm">
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>目標產業垂直打擊：</strong>集中資源於塑膠射出、金屬加工等高回報產業。</li>
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>緊扣補助時程：</strong>以政府財政日曆為節奏，規劃具時效性的銷售戰役。</li>
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>建立推薦生態系：</strong>與企管顧問、補助代辦公司合作，擴大觸角。</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-center">S3: 賦能銷售執行</h3>
+                    <p class="text-center text-gray-600 mb-4">將團隊轉型為顧問，提供超越產品的價值，並以ROI驅動銷售。</p>
+                     <ul class="space-y-3 text-sm">
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>顧問式銷售模型：</strong>培訓團隊具備診斷、補助導航與ROI量化能力。</li>
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>階梯式定價：</strong>以「核心包+訂閱模組」模式降低初期門檻，創造長期收入。</li>
+                        <li class="bg-gray-50 p-3 rounded-lg"><strong>ROI驅動工具包：</strong>提供ROI計算器、產業案例庫等武器，將價值具象化。</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="card p-6 mt-8 bg-blue-50 border-blue-200">
+                <h3 class="font-bold text-xl mb-2 text-blue-800">🚀 核心賦能策略: IIoT/SCADA 整合方案</h3>
+                <p class="text-blue-700">與 **風巽達科技** 合作，共同開發 IIoT/SCADA 與雲端 MES 的整合解決方案。此合作將大幅強化 **Enterprise 企業版** 的產品競爭力，為下半年的高價值市場客戶提供從數據採集到製造執行的完整方案，是達成年度目標的關鍵引擎。</p>
+            </div>
+
+            <!-- Market Intelligence -->
+            <div class="mt-16">
+                 <div class="text-center mb-12">
+                    <h2 class="text-2xl font-bold text-slate-800">市場情報儀表板</h2>
+                    <p class="max-w-3xl mx-auto text-slate-600 mt-2">知己知彼，百戰不殆。此為我們的戰術情報中心。</p>
+                </div>
+                <div class="card p-6 md:p-8">
+                    <h3 class="font-bold text-xl mb-4">政府補助儀表板 (動態更新)</h3>
+                    <p class="text-sm text-gray-600 mb-4">此儀表板根據<span class="font-bold text-red-500">今天 (<span id="today-date"></span>)</span> 的日期，自動標示出各項補助的申請狀態，幫助我們精準定位機會。</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-slate-600">
+                            <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                                <tr>
+                                    <th class="px-4 py-3">計畫名稱</th>
+                                    <th class="px-4 py-3">申請期間</th>
+                                    <th class="px-4 py-3">狀態</th>
+                                    <th class="px-4 py-3">銷售切入點</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grants-table-body">
+                                <!-- Grant rows will be injected by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+                    <div class="card p-6 cursor-pointer" onclick="toggleDetails('comp-sap')">
+                        <h3 class="font-bold text-lg">國際巨頭 (SAP/Siemens)</h3>
+                        <p class="text-sm text-slate-500">目標：大型跨國企業</p>
+                        <div id="comp-sap" class="details-content mt-4 pt-4 border-t">
+                            <p class="font-semibold text-blue-600">我方論述：</p>
+                            <p class="text-sm text-slate-700">「SAP是頂級系統，但對貴公司而言如同用牛刀殺雞。我們的方案能用其5%的成本，在三個月內解決您80%最痛的問題。」</p>
+                        </div>
+                    </div>
+                    <div class="card p-6 cursor-pointer" onclick="toggleDetails('comp-digi')">
+                        <h3 class="font-bold text-lg">本土冠軍 (鼎華智能)</h3>
+                        <p class="text-sm text-slate-500">目標：中大型、高科技產業</p>
+                         <div id="comp-digi" class="details-content mt-4 pt-4 border-t">
+                            <p class="font-semibold text-blue-600">我方論述：</p>
+                            <p class="text-sm text-slate-700">「鼎華在處理大型複雜專案上很出色。但我們專注於提供標準化、快速見效的『產品』，而非一場長達一年的專案，讓您以最低風險看到回報。」</p>
+                        </div>
+                    </div>
+                    <div class="card p-6 cursor-pointer" onclick="toggleDetails('comp-ares')">
+                        <h3 class="font-bold text-lg">本土冠軍 (資通電腦)</h3>
+                        <p class="text-sm text-slate-500">目標：需高追溯性產業</p>
+                         <div id="comp-ares" class="details-content mt-4 pt-4 border-t">
+                            <p class="font-semibold text-blue-600">我方論述：</p>
+                            <p class="text-sm text-slate-700">「ciMes在品質追溯上很專業。我們的核心包同樣包含完整的生產履歷，且導入門檻更低，能讓您更快滿足客戶稽核要求。」</p>
+                        </div>
+                    </div>
+                    <div class="card p-6 cursor-pointer" onclick="toggleDetails('comp-fpg')">
+                        <h3 class="font-bold text-lg">台塑網</h3>
+                        <p class="text-sm text-slate-500">目標：傳產、追求穩定性企業</p>
+                         <div id="comp-fpg" class="details-content mt-4 pt-4 border-t">
+                            <p class="font-semibold text-blue-600">我方論述：</p>
+                            <p class="text-sm text-slate-700">「台塑網的系統非常可靠，但架構龐大。我們的MES BOX更輕量、更有彈性，特別適合尋求快速導入、靈活調整的中小型工廠。」</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Measures -->
+        <section id="measures" class="content-section mb-16">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold">執行方案 (Measures)</h2>
+                <p class="text-gray-600 mt-2">將年度計畫拆解為季度與月份，確保策略的有效執行與即時調整</p>
+            </div>
+            <div class="card p-6 md:p-8">
+                <div class="flex flex-wrap justify-center border-b border-gray-200 mb-6">
+                    <button data-quarter="q1" class="quarter-tab text-lg font-semibold py-3 px-4 md:px-6 -mb-px border-b-2 border-transparent rounded-t-lg">第一季度 (Q1)</button>
+                    <button data-quarter="q2" class="quarter-tab text-lg font-semibold py-3 px-4 md:px-6 -mb-px border-b-2 border-transparent rounded-t-lg">第二季度 (Q2)</button>
+                    <button data-quarter="q3" class="quarter-tab text-lg font-semibold py-3 px-4 md:px-6 -mb-px border-b-2 border-transparent rounded-t-lg">第三季度 (Q3)</button>
+                    <button data-quarter="q4" class="quarter-tab text-lg font-semibold py-3 px-4 md:px-6 -mb-px border-b-2 border-transparent rounded-t-lg">第四季度 (Q4)</button>
+                </div>
+                <div id="measures-content">
+                    <!-- Quarterly content will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Management Section -->
+        <section id="risks" class="content-section">
+            <h2 class="text-3xl font-bold text-center mb-8">風險評估與改善方案</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                 <!-- Risk Cards will be injected by JS -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-8 mt-16 text-gray-500 border-t">
+        <p>卓碼資訊股份有限公司 | 2025年度整合銷售戰略計畫</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Data Definitions ---
+        const goalsData = {
+            revenue: { labels: ['Essential', 'Standard', 'Enterprise', '加值服務'], data: [9900000, 8940000, 9760000, 1400000], colors: ['#3b82f6', '#22c55e', '#f59e0b', '#a5b4fc'] },
+            units: { labels: ['Essential', 'Standard', 'Enterprise'], data: [50, 30, 20], colors: ['#8b5cf6', '#14b8a6', '#ec4899'] }
+        };
+
+        const measuresData = {
+            q1: { focus: '補助申請總動員 & 市場預熱', months: [ 
+                { name: 'M1 (一月)', strategy: '建立補助專家形象', actions: ['啟動「如何成功申請2025補助」線上研討會系列。', '銷售團隊完成補助計畫深度培訓，並通過認證。', '與風巽達啟動整合方案需求分析。'], kpi: '累積200名潛在客戶名單；團隊全員通過補助認證。' }, 
+                { name: 'M2 (二月)', strategy: '主攻期：創造緊迫感', actions: ['所有行銷管道強力放送「3/20補助截止」倒數訊息。', '銷售團隊核心任務：引導客戶完成「低碳及智慧化補助」申請文件。', '合作進行IIoT+MES原型開發。'], kpi: '成功協助30家客戶提交補助申請；完成SCADA原型。' }, 
+                { name: 'M3 (三月)', strategy: '鞏固戰果與需求深化', actions: ['針對已申請補助客戶，進行需求訪談，推廣Standard/Enterprise方案。', '完成IIoT整合方案的資料串接與雙向測試。', '舉辦「工廠透明化：從數據到利潤」Webinar。'], kpi: '將10個補助案客戶轉化為Standard以上商機；完成整合測試報告。' } 
+            ] },
+            q2: { focus: '主力方案銷售 & 整合方案落地', months: [ 
+                { name: 'M4 (四月)', strategy: '強攻高痛點產業', actions: ['針對塑膠射出、金屬加工產業，推廣Standard方案與成功案例。', '與風巽達完成「汽車零件製造」場景Demo，並舉辦產業專屬Webinar。'], kpi: 'Standard方案銷售達8套；汽車場景Webinar觸及50家潛在客戶。' }, 
+                { name: 'M5 (五月)', strategy: '突破Enterprise與建立口碑', actions: ['鎖定指標客戶，推動首個Enterprise方案，並以其作為標竿案例。', '完成「食品包裝」場景Demo與整合穩定性測試。'], kpi: '簽訂首份Enterprise合約；產出穩定性測試報告。' }, 
+                { name: 'M6 (六月)', strategy: '整合方案商業化', actions: ['正式對外推廣IIoT整合方案，主打「數據採集到雲端戰情室」完整價值。', '啟動通路(OEM)合作洽談，提供合作夥伴工具包。', '啟動整合方案的客戶現場試點部署。'], kpi: '簽訂首份整合方案合約；簽訂2家通路合作備忘錄。' } 
+            ] },
+            q3: { focus: '全面進攻：主打高價值整合方案', months: [ 
+                { name: 'M7 (七月)', strategy: '成功案例行銷 & ESG價值延伸', actions: ['運用上半年成功案例，針對汽車、食品產業強力推廣Enterprise整合方案。', '將銷售論述與下半年「開拓多元市場補助」掛鉤，強調供應鏈韌性。', '推廣「碳盤查就緒」價值主張。'], kpi: '整合方案創造10個有效商機；完成3份ESG主題白皮書。' }, 
+                { name: 'M8 (八月)', strategy: '高價值方案推廣', actions: ['舉辦第二場高階線上研討會：「AI與數位雙生如何落地？」，推廣Enterprise整合方案。', '簽訂第一份白牌授權(OEM)合約。'], kpi: 'Enterprise整合方案銷售達5套；簽訂一份白標合約。' }, 
+                { name: 'M9 (九月)', strategy: '季度業績衝刺', actions: ['提供Q3季末限時優惠，主打「核心包+AI模組」組合。', '透過白牌合作夥伴獲取轉介商機，並舉辦夥伴專屬培訓。'], kpi: '季度業績達成率100%；夥伴營收貢獻達50萬。' } 
+            ] },
+            q4: { focus: '鞏固領導地位 & 佈局明年', months: [ 
+                { name: 'M10 (十月)', strategy: '客戶升級與續約', actions: ['對潛在客戶進行最後一波滾動式補助案推廣。', '向已導入Essential/Standard方案的客戶，推銷升級至Enterprise整合方案。', '啟動年度客戶滿意度調查。'], kpi: '透過補助案成交5套Essential；完成5個客戶續約升級。' }, 
+                { name: 'M11 (十一月)', strategy: '鎖定企業預算', actions: ['強力追蹤Enterprise整合方案商機，提供ROI工具包，協助客戶納入下年度預算。', '拜訪年度重點客戶，收集使用回饋，挖掘新需求。'], kpi: '確保年度Enterprise 20套目標達成；完成10份客戶深度訪談報告。' }, 
+                { name: 'M12 (十二月)', strategy: '年度目標達成與總結', actions: ['進行最後合約簽訂與款項催收。', '召開年度業務總結會議，檢討OGSM達成狀況，並根據市場回饋草擬下年度優化計畫。'], kpi: '年度總業績達成率100%以上；提出下年度業績增長20%策略草案。' } 
+            ] }
+        };
+
+        const grantsData = [
+            { name: "中小型製造業(10人以上)低碳及智慧化升級轉型個案補助", start: "2025-02-25", end: "2025-03-20", focus: "核心戰場：覆蓋核心軟硬體及導入費用。" },
+            { name: "提供中小型製造業AI工具庫補助", start: "2025-01-01", end: "2025-12-31", focus: "模組追加：引導客戶採購AI數據分析模組。" },
+            { name: "開拓多元市場爭取海外訂單補助", start: "2025-07-01", end: "2025-08-31", focus: "價值延伸：向出口導向客戶強調MES強化供應鏈韌性。" },
+            { name: "協助傳統產業技術開發計畫(CITD) - 下半年", start: "2025-06-01", end: "2025-07-31", focus: "研發導向：將MES定位為實現研發目標的工具。" }
+        ];
+
+        const riskData = [
+            { title: '渠道/白標策略失敗', tracker: '白標夥伴簽約數與營收貢獻', plan: 'Q3結束時若白標營收遠低於目標，立即重新檢討分潤機制與賦能計畫。若無改善，Q4需將銷售資源全部轉回直接銷售。' },
+            { title: 'Essential 客戶支援成本過高', tracker: 'Essential 客戶的技術支援工時佔比', plan: '制定嚴格的SLA，超出時數需付費或引導升級。優化線上教學影片與FAQ，降低基礎問題佔用。' },
+            { title: '團隊無法兼顧多線作戰', tracker: '業務活動量與各方案提案比例', plan: 'Q3起可考慮依業務能力分工：A/主管主攻Enterprise與渠道，B/C 負責Essential/Standard。' },
+            { title: '年度目標壓力過大', tracker: '每月/每季的業績達成率', plan: '連續兩月業績達成率低於70%時，立即召開銷售檢討會議，分析是潛客數量不足還是成交率過低，並調整策略。' },
+        ];
+
+
+        // --- Navigation Logic ---
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.content-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-40% 0px -60% 0px' });
+        sections.forEach(section => observer.observe(section));
+        navLinks.forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // --- Counter Animation ---
+        const animateCounters = () => {
+            const counters = document.querySelectorAll('.counter');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = +counter.getAttribute('data-target');
+                        let current = 0;
+                        const updateCounter = () => {
+                            const increment = Math.ceil(target / 100);
+                            if (current < target) {
+                                current += increment;
+                                if (current > target) current = target;
+                                counter.innerText = current.toLocaleString();
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.innerText = target.toLocaleString();
+                            }
+                        };
+                        updateCounter();
+                        observer.unobserve(counter); // Animate only once
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(counter => observer.observe(counter));
+        };
+        
+        // --- Doughnut Charts ---
+        const doughnutChartOptions = { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { font: { size: 14 } } }, tooltip: { callbacks: { label: function (context) { let label = context.label || ''; if (label) { label += ': '; } if (context.dataset.label === 'NT$') { label += 'NT$ ' + context.raw.toLocaleString(); } else { label += context.raw.toLocaleString() + ' 套'; } return label; } } } } };
+        new Chart(document.getElementById('revenueChart'), { type: 'doughnut', data: { labels: goalsData.revenue.labels, datasets: [{ label: 'NT$', data: goalsData.revenue.data, backgroundColor: goalsData.revenue.colors }] }, options: doughnutChartOptions });
+        new Chart(document.getElementById('unitsChart'), { type: 'doughnut', data: { labels: goalsData.units.labels, datasets: [{ label: '套', data: goalsData.units.data, backgroundColor: goalsData.units.colors }] }, options: doughnutChartOptions });
+
+        // --- Grants Dashboard ---
+        const grantsTableBody = document.getElementById('grants-table-body');
+        const today = new Date(); // Use real current date
+        document.getElementById('today-date').textContent = today.toLocaleDateString('zh-TW');
+
+        grantsData.forEach(grant => {
+            const startDate = new Date(grant.start);
+            const endDate = new Date(grant.end);
+            endDate.setHours(23, 59, 59, 999); // Include the whole end day
+            let status, statusClass;
+
+            if (today < startDate) {
+                status = '即將開始';
+                statusClass = 'grant-status-upcoming';
+            } else if (today >= startDate && today <= endDate) {
+                status = '開放申請中';
+                statusClass = 'grant-status-active';
+            } else {
+                status = '已截止';
+                statusClass = 'grant-status-past';
+            }
+
+            const row = `
+                <tr class="bg-white border-b hover:bg-slate-50">
+                    <td class="px-4 py-3 font-medium text-slate-900">${grant.name}</td>
+                    <td class="px-4 py-3">${grant.start.replaceAll('-', '/')} - ${grant.end.replaceAll('-', '/')}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusClass}">${status}</span>
+                    </td>
+                    <td class="px-4 py-3">${grant.focus}</td>
+                </tr>
+            `;
+            grantsTableBody.innerHTML += row;
+        });
+
+        // --- Measures Tabs ---
+        const quarterTabs = document.querySelectorAll('.quarter-tab');
+        const measuresContent = document.getElementById('measures-content');
+        function renderQuarterContent(quarterKey) {
+            const data = measuresData[quarterKey];
+            let contentHTML = `<div class="bg-blue-50 p-4 rounded-lg mb-6 text-center"><h3 class="font-bold text-blue-800">季度重點: ${data.focus}</h3></div><div class="space-y-4">`;
+            data.months.forEach(month => {
+                contentHTML += `<div class="border border-gray-200 rounded-lg"><button class="month-accordion-toggle w-full flex justify-between items-center p-4 text-left font-bold"><span>${month.name} - ${month.strategy}</span><span class="transform transition-transform duration-300 text-xl font-light">+</span></button><div class="month-accordion-content"><div class="p-4 pt-0 grid grid-cols-1 md:grid-cols-2 gap-4"><div class="bg-gray-50 p-3 rounded"><h4 class="font-semibold text-sm text-gray-500 mb-2">具體執行方案</h4><ul class="space-y-2 text-sm">${month.actions.map(action => `<li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">✓</span><span>${action}</span></li>`).join('')}</ul></div><div class="bg-gray-50 p-3 rounded flex flex-col"><h4 class="font-semibold text-sm text-gray-500 mb-2">檢核指標 (KPI)</h4><p class="text-sm flex-grow">${month.kpi}</p></div></div></div></div>`;
+            });
+            contentHTML += `</div>`;
+            measuresContent.innerHTML = contentHTML;
+            document.querySelectorAll('.month-accordion-toggle').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('span:last-child');
+                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    if(isOpen) {
+                        content.style.maxHeight = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(45deg)';
+                    }
+                });
+            });
+        }
+        quarterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                quarterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderQuarterContent(tab.dataset.quarter);
+            });
+        });
+        
+        // --- Risk Management Section ---
+        const risksContainer = document.querySelector('#risks .grid');
+        riskData.forEach(risk => {
+            const riskCard = document.createElement('div');
+            riskCard.className = 'card p-6';
+            riskCard.innerHTML = `
+                <h3 class="text-lg font-bold text-red-700 mb-3">${risk.title}</h3>
+                <div>
+                    <h4 class="font-semibold text-sm text-gray-500">追蹤指標</h4>
+                    <p class="text-sm text-gray-700 mb-3">${risk.tracker}</p>
+                    <h4 class="font-semibold text-sm text-gray-500">改善方案</h4>
+                    <p class="text-sm text-gray-700">${risk.plan}</p>
+                </div>
+            `;
+            risksContainer.appendChild(riskCard);
+        });
+
+        // --- Details Toggling Logic ---
+        window.toggleDetails = function(id) {
+            const element = document.getElementById(id);
+            const isHidden = element.style.maxHeight === '0px' || !element.style.maxHeight;
+            if (isHidden) {
+                element.style.maxHeight = element.scrollHeight + 'px';
+            } else {
+                element.style.maxHeight = '0px';
+            }
+        }
+
+        // --- Initial Render ---
+        animateCounters();
+        document.querySelector('.quarter-tab[data-quarter="q1"]').click();
+    });
+    </script>
+</body>
+</html>

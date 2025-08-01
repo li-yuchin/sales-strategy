@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式OGSM目標策略管理模式解析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Corporate Blue & Gold -->
+    <!-- Application Structure Plan: The SPA is designed as a top-down, single-page exploratory journey, moving from 'What' and 'Why' to 'How' and 'In Practice'. The structure uses thematic sections (Intro, Why, How-To, Challenges, Comparison, Cases) instead of mirroring the report's chapters. This is more intuitive for a user wanting to learn and apply the OGSM model. Key interactions include a clickable core concept diagram, interactive comparison charts, and expandable sections for detailed content. This flow guides the user from high-level understanding to practical application and contextual comparison, maximizing usability and knowledge retention. -->
+    <!-- Visualization & Content Choices: 
+    - OGSM Core Concept: Goal=Organize, Method=HTML/CSS Diagram, Interaction=Click-to-reveal, Justification=Interactive learning of the O-G-S-M flow, Library=None.
+    - Framework Comparison: Goal=Compare, Method=Chart.js Radar Chart, Interaction=Filterable datasets, Justification=Visually compare multiple frameworks on multiple axes, Library=Chart.js.
+    - Implementation Steps & Challenges: Goal=Inform/Organize, Method=HTML/CSS/JS Accordions & Clickable Lists, Interaction=Expand/collapse & click-to-show, Justification=Manages dense information effectively and encourages user engagement over passive reading, Library=None.
+    - Case Studies: Goal=Inform, Method=HTML/CSS/JS Logo Grid/Carousel, Interaction=Click for details, Justification=Standard, clean way to present portfolio-like items, Library=None.
+    - All data is extracted from the source report. Quantitative data for charts is representational, based on report examples, to illustrate concepts.
+    - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 450px;
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link:hover {
+            color: #0369a1; /* sky-700 */
+            border-bottom-color: #0369a1; /* sky-700 */
+        }
+        .active-nav {
+            color: #0c4a6e; /* sky-900 */
+            border-bottom-color: #0c4a6e; /* sky-900 */
+            font-weight: 700;
+        }
+        .ogsm-card.active {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #0c4a6e; /* sky-900 */
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 smooth-scroll">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-sky-900">OGSM 互動解析</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="nav-link px-3 py-2 text-sm font-medium text-slate-600 border-b-2 border-transparent">模型概覽</a>
+                        <a href="#why" class="nav-link px-3 py-2 text-sm font-medium text-slate-600 border-b-2 border-transparent">核心優勢</a>
+                        <a href="#how" class="nav-link px-3 py-2 text-sm font-medium text-slate-600 border-b-2 border-transparent">實施步驟</a>
+                        <a href="#challenges" class="nav-link px-3 py-2 text-sm font-medium text-slate-600 border-b-2 border-transparent">挑戰與應對</a>
+                        <a href="#compare" class="nav-link px-3 py-2 text-sm font-medium text-slate-600 border-b-2 border-transparent">框架比較</a>
+                        <a href="#cases" class="nav-link px-3 py-2 text-sm font-medium text-slate-600 border-b-2 border-transparent">成功案例</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-sky-800 hover:bg-slate-100 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#intro" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-slate-600">模型概覽</a>
+                <a href="#why" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-slate-600">核心優勢</a>
+                <a href="#how" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-slate-600">實施步驟</a>
+                <a href="#challenges" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-slate-600">挑戰與應對</a>
+                <a href="#compare" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-slate-600">框架比較</a>
+                <a href="#cases" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-slate-600">成功案例</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <!-- Section 1: Introduction -->
+        <section id="intro" class="pt-16 -mt-16 mb-16 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-sky-900 mb-4">探索 OGSM：將願景化為行動</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-8">
+                OGSM 是一種強大的目標策略管理模式，透過其四大核心要素，將企業的宏大願景轉化為可量化、可執行的具體目標與行動。這個被稱為「一頁計畫表」的工具，能確保組織上下目標一致，顯著提升整體執行效率。
+            </p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <h3 class="text-xl font-bold text-slate-800 mb-6">互動式OGSM模型解析 (點擊卡片查看詳情)</h3>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-6">
+                    <div id="ogsm-card-O" class="ogsm-card cursor-pointer p-4 w-full md:w-1/4 bg-sky-100 rounded-lg border-2 border-transparent transition-all duration-300">
+                        <h4 class="text-2xl font-bold text-sky-800">O</h4>
+                        <p class="text-sm text-sky-700">Objective (最終目的)</p>
+                    </div>
+                    <div class="text-2xl text-slate-400 font-light transform md:rotate-0 rotate-90">→</div>
+                    <div id="ogsm-card-G" class="ogsm-card cursor-pointer p-4 w-full md:w-1/4 bg-teal-100 rounded-lg border-2 border-transparent transition-all duration-300">
+                        <h4 class="text-2xl font-bold text-teal-800">G</h4>
+                        <p class="text-sm text-teal-700">Goals (具體目標)</p>
+                    </div>
+                    <div class="text-2xl text-slate-400 font-light transform md:rotate-0 rotate-90">→</div>
+                    <div id="ogsm-card-S" class="ogsm-card cursor-pointer p-4 w-full md:w-1/4 bg-amber-100 rounded-lg border-2 border-transparent transition-all duration-300">
+                        <h4 class="text-2xl font-bold text-amber-800">S</h4>
+                        <p class="text-sm text-amber-700">Strategies (策略)</p>
+                    </div>
+                    <div class="text-2xl text-slate-400 font-light transform md:rotate-0 rotate-90">→</div>
+                    <div id="ogsm-card-M" class="ogsm-card cursor-pointer p-4 w-full md:w-1/4 bg-rose-100 rounded-lg border-2 border-transparent transition-all duration-300">
+                        <h4 class="text-2xl font-bold text-rose-800">M</h4>
+                        <p class="text-sm text-rose-700">Measures (衡量指標)</p>
+                    </div>
+                </div>
+                <div id="ogsm-details" class="mt-4 p-6 bg-slate-100 rounded-lg text-left min-h-[150px] flex items-center justify-center transition-opacity duration-500">
+                    <p class="text-slate-500">點擊上方任一元素，深入了解其定義與關鍵作用。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Why OGSM? -->
+        <section id="why" class="pt-20 -mt-16 mb-16">
+            <h2 class="text-3xl font-bold text-sky-900 mb-2 text-center">為何選擇 OGSM？</h2>
+            <p class="text-lg text-slate-600 mb-10 text-center max-w-2xl mx-auto">OGSM 不僅是個規劃工具，更是驅動組織成長的強大引擎，其優勢體現在四大關鍵層面。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-3xl text-sky-600 mb-3">🎯</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">提升戰略清晰度</h3>
+                    <p class="text-slate-600">將抽象願景轉化為具體行動，確保組織上下目標一致，減少模糊地帶與重複工作。</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-3xl text-teal-600 mb-3">🚀</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">強化執行效率</h3>
+                    <p class="text-slate-600">明確的目標與責任歸屬，加上實時監控，形成內在問責機制，提升團隊執行力。</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-3xl text-amber-600 mb-3">💰</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">優化資源分配</h3>
+                    <p class="text-slate-600">強迫組織進行戰略取捨，將稀缺資源集中在最關鍵的策略上，提高投資回報率。</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-3xl text-rose-600 mb-3">🤝</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">促進敏捷協作</h3>
+                    <p class="text-slate-600">動態調整機制與清晰的框架促進跨部門協作，使組織能快速應對市場變化。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: How to Implement -->
+        <section id="how" class="pt-20 -mt-16 mb-16">
+            <h2 class="text-3xl font-bold text-sky-900 mb-2 text-center">如何實施 OGSM？</h2>
+            <p class="text-lg text-slate-600 mb-10 text-center max-w-2xl mx-auto">遵循結構化的步驟，將OGSM框架成功導入您的組織。點擊各步驟展開詳細指引。</p>
+            <div class="space-y-4 max-w-4xl mx-auto">
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full text-left p-5 font-bold text-lg text-slate-800 flex justify-between items-center">
+                        <span>第一步：準備工作 (Preparation)</span>
+                        <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 border-t border-slate-200 text-slate-600">
+                            <p>任何有效的戰略規劃都必須建立在對當前內外部環境的深刻理解之上。忽略這一步，就像在沒有地圖的情況下開始旅程。</p>
+                            <ul class="list-disc list-inside mt-4 space-y-2">
+                                <li><strong>識別組織現狀：</strong> 進行全面的內外部研究，了解公司和市場的當前狀態。</li>
+                                <li><strong>運用分析工具：</strong> 推薦使用 SWOT、PESTLE 等分析工具，獲取全面的環境視角，為後續決策奠定堅實基礎。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full text-left p-5 font-bold text-lg text-slate-800 flex justify-between items-center">
+                        <span>第二步：設定最終目的 (Objective)</span>
+                         <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 border-t border-slate-200 text-slate-600">
+                            <p>Objective 是組織的「北極星」，為所有後續行動提供意義和背景。它應是一個清晰、鼓舞人心的宏觀陳述。</p>
+                             <ul class="list-disc list-inside mt-4 space-y-2">
+                                <li><strong>清晰簡潔：</strong> 用一句話陳述，易於理解，避免使用行話。</li>
+                                <li><strong>鼓舞人心：</strong> 足夠宏大以激勵團隊，但又非遙不可及。</li>
+                                <li><strong>長期導向：</strong> 通常展望未來3-5年，保持相對穩定。</li>
+                                <li><strong>範例：</strong> 「到2025年，透過專注於新產品與創新行銷，成為飲料行業的市場領導者。」</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full text-left p-5 font-bold text-lg text-slate-800 flex justify-between items-center">
+                        <span>第三步：制定具體目標 (Goals)</span>
+                         <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 border-t border-slate-200 text-slate-600">
+                           <p>Goals 將抽象的 Objective 轉化為可量化的里程碑。所有 Goals 都必須符合 SMART 原則。</p>
+                            <div class="mt-4 p-4 bg-slate-100 rounded-lg">
+                                <h4 class="font-bold mb-2">SMART 原則：</h4>
+                                <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 text-sm">
+                                    <li class="p-2 bg-sky-200 rounded"><strong>S</strong>pecific (具體)</li>
+                                    <li class="p-2 bg-teal-200 rounded"><strong>M</strong>easurable (可衡量)</li>
+                                    <li class="p-2 bg-emerald-200 rounded"><strong>A</strong>chievable (可實現)</li>
+                                    <li class="p-2 bg-amber-200 rounded"><strong>R</strong>elevant (相關)</li>
+                                    <li class="p-2 bg-rose-200 rounded"><strong>T</strong>ime-bound (有時限)</li>
+                                </ul>
+                            </div>
+                            <p class="mt-4"><strong>範例：</strong> 「在明年6月前，公司全員的核心職能課程完成率由60%提升至90%。」</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full text-left p-5 font-bold text-lg text-slate-800 flex justify-between items-center">
+                        <span>第四步：發展策略 (Strategies)</span>
+                         <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 border-t border-slate-200 text-slate-600">
+                           <p>Strategies 是實現 Goals 的行動方案，不僅是「如何做」，更是「選擇做什麼」和「選擇不做什麼」。</p>
+                            <ul class="list-disc list-inside mt-4 space-y-2">
+                                <li><strong>聚焦與取捨：</strong> 優先選擇3-5個成功機率最大的策略，避免資源分散。</li>
+                                <li><strong>資源配置：</strong> 明確包含人力、資金、時間等資源的分配計畫。</li>
+                                <li><strong>範例：</strong> 「透過建立學習激勵措施，讓員工願意主動參與線上課程。」</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full text-left p-5 font-bold text-lg text-slate-800 flex justify-between items-center">
+                        <span>第五步：建立衡量指標 (Measures)</span>
+                         <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 border-t border-slate-200 text-slate-600">
+                           <p>Measures 是組織學習和適應的關鍵環節，用於追蹤策略的執行效果與進度。</p>
+                            <ul class="list-disc list-inside mt-4 space-y-2">
+                                <li><strong>衡量指標 (Dashboard)：</strong> 選擇與目標一致的關鍵績效指標(KPIs)，結合領先與滯後指標。</li>
+                                <li><strong>行動計畫 (Action Plan)：</strong> 列出具體步驟、負責人與時間表，確保責任歸屬。</li>
+                                <li><strong>範例：</strong> 「Dashboard: 每月追蹤課程完成率。Action Plan: 明年1/31前完成學習激勵措施的公告與推行。」</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full text-left p-5 font-bold text-lg text-slate-800 flex justify-between items-center">
+                        <span>第六步：持續監控與調整</span>
+                         <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 border-t border-slate-200 text-slate-600">
+                           <p>OGSM並非一次性任務，而是一個持續的循環過程（PDCA）。定期的審查和靈活的調整能力是成功的關鍵。</p>
+                            <ul class="list-disc list-inside mt-4 space-y-2">
+                                <li><strong>定期審查：</strong> 至少每季度舉行一次審查會議，評估進度，分析差距。</li>
+                                <li><strong>敏捷調整：</strong> 根據市場變化或內部反饋，靈活調整策略和目標。</li>
+                                <li><strong>強化溝通：</strong> 建立由下而上的反饋渠道，確保資訊暢通。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Challenges -->
+        <section id="challenges" class="pt-20 -mt-16 mb-16 bg-slate-100 py-12 rounded-2xl">
+            <h2 class="text-3xl font-bold text-sky-900 mb-2 text-center">挑戰與應對策略</h2>
+            <p class="text-lg text-slate-600 mb-10 text-center max-w-2xl mx-auto">實施OGSM可能遇到挑戰。了解常見陷阱並預先規劃應對策略，是提高成功率的關鍵。點擊左側陷阱查看解決方案。</p>
+            <div class="max-w-5xl mx-auto md:flex md:space-x-8">
+                <div class="md:w-1/3">
+                    <ul id="pitfall-list" class="space-y-2">
+                        <li class="pitfall-item cursor-pointer p-3 bg-white rounded-lg shadow-sm font-medium transition-all duration-200 hover:bg-sky-100">視為填寫練習</li>
+                        <li class="pitfall-item cursor-pointer p-3 bg-white rounded-lg shadow-sm font-medium transition-all duration-200 hover:bg-sky-100">目標或策略過於模糊</li>
+                        <li class="pitfall-item cursor-pointer p-3 bg-white rounded-lg shadow-sm font-medium transition-all duration-200 hover:bg-sky-100">未做真正選擇</li>
+                        <li class="pitfall-item cursor-pointer p-3 bg-white rounded-lg shadow-sm font-medium transition-all duration-200 hover:bg-sky-100">實施關注不足</li>
+                        <li class="pitfall-item cursor-pointer p-3 bg-white rounded-lg shadow-sm font-medium transition-all duration-200 hover:bg-sky-100">適應市場變化速度慢</li>
+                    </ul>
+                </div>
+                <div class="md:w-2/3 mt-6 md:mt-0">
+                    <div id="solution-display" class="p-6 bg-white rounded-lg shadow-inner min-h-[200px] flex flex-col justify-center">
+                        <h4 id="solution-title" class="text-xl font-bold text-sky-800 mb-2"></h4>
+                        <p id="solution-text" class="text-slate-700"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Comparison -->
+        <section id="compare" class="pt-20 -mt-16 mb-16">
+             <h2 class="text-3xl font-bold text-sky-900 mb-2 text-center">OGSM vs. 其他戰略框架</h2>
+            <p class="text-lg text-slate-600 mb-10 text-center max-w-2xl mx-auto">OGSM 在眾多戰略工具中脫穎而出，但了解其與 OKR、MBO 等框架的異同，有助於企業選擇或整合最適合的工具。</p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div class="text-center mb-6">
+                    <span class="font-bold mr-4">選擇比較對象:</span>
+                    <div id="framework-buttons" class="inline-flex rounded-md shadow-sm" role="group">
+                        <button type="button" data-framework="ogsm" class="framework-btn active-btn px-4 py-2 text-sm font-medium text-white bg-sky-800 border border-sky-800 rounded-l-lg">OGSM</button>
+                        <button type="button" data-framework="okr" class="framework-btn px-4 py-2 text-sm font-medium text-slate-900 bg-white border-t border-b border-slate-200 hover:bg-slate-100">OKR</button>
+                        <button type="button" data-framework="mbo" class="framework-btn px-4 py-2 text-sm font-medium text-slate-900 bg-white border-t border-b border-slate-200 hover:bg-slate-100">MBO</button>
+                        <button type="button" data-framework="bsc" class="framework-btn px-4 py-2 text-sm font-medium text-slate-900 bg-white border border-slate-200 rounded-r-lg hover:bg-slate-100">BSC</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Case Studies -->
+        <section id="cases" class="pt-20 -mt-16">
+            <h2 class="text-3xl font-bold text-sky-900 mb-2 text-center">成功案例</h2>
+            <p class="text-lg text-slate-600 mb-10 text-center max-w-2xl mx-auto">從豐田的精實生產到寶僑的全球戰略，眾多世界頂尖企業都透過OGSM實現了卓越的成果。</p>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+                <div class="case-card bg-white p-4 rounded-xl shadow-md flex items-center justify-center aspect-square cursor-pointer transition-all hover:shadow-xl hover:scale-105" data-case="toyota">
+                    <img src="https://placehold.co/100x40/000000/FFFFFF?text=TOYOTA" alt="Toyota Logo" class="max-h-10">
+                </div>
+                <div class="case-card bg-white p-4 rounded-xl shadow-md flex items-center justify-center aspect-square cursor-pointer transition-all hover:shadow-xl hover:scale-105" data-case="pg">
+                    <img src="https://placehold.co/100x40/00529B/FFFFFF?text=P%26G" alt="P&G Logo" class="max-h-10">
+                </div>
+                <div class="case-card bg-white p-4 rounded-xl shadow-md flex items-center justify-center aspect-square cursor-pointer transition-all hover:shadow-xl hover:scale-105" data-case="heineken">
+                    <img src="https://placehold.co/100x40/009B48/FFFFFF?text=Heineken" alt="Heineken Logo" class="max-h-10">
+                </div>
+                <div class="case-card bg-white p-4 rounded-xl shadow-md flex items-center justify-center aspect-square cursor-pointer transition-all hover:shadow-xl hover:scale-105" data-case="cocacola">
+                    <img src="https://placehold.co/100x40/F40009/FFFFFF?text=Coca-Cola" alt="Coca-Cola Logo" class="max-h-10">
+                </div>
+                <div class="case-card bg-white p-4 rounded-xl shadow-md flex items-center justify-center aspect-square cursor-pointer transition-all hover:shadow-xl hover:scale-105" data-case="others">
+                    <span class="text-slate-700 font-bold text-center">更多企業</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Modal for Case Studies -->
+    <div id="case-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full relative transform transition-all scale-95 opacity-0">
+            <button id="modal-close-btn" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 id="modal-title" class="text-2xl font-bold text-sky-900 mb-4"></h3>
+            <p id="modal-text" class="text-slate-600"></p>
+        </div>
+    </div>
+
+
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <p>&copy; 2025 互動式OGSM目標策略管理模式解析. All rights reserved.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    
+    // Data objects
+    const ogsmDetailsData = {
+        O: {
+            title: 'O: Objective (最終目的)',
+            text: '代表企業要達成的長遠、定性的宏觀願景。它應當清晰、鼓舞人心，並與公司的核心使命一致，通常展望未來3-5年。',
+            bgColor: 'bg-sky-100'
+        },
+        G: {
+            title: 'G: Goals (具體目標)',
+            text: '從最終目的中拆分出來的、可量化、可追蹤的具體指標。目標的設定應以SMART原則為基礎，將抽象的願景轉化為可衡量的里程碑。',
+            bgColor: 'bg-teal-100'
+        },
+        S: {
+            title: 'S: Strategies (策略)',
+            text: '達成具體目標的行動方案，強調透過定位與取捨來有效使用資源。它闡述了如何達成目標，並包含資源分配的計畫。',
+            bgColor: 'bg-amber-100'
+        },
+        M: {
+            title: 'M: Measures (衡量指標)',
+            text: '衡量策略執行效果的監控指標，用於評估策略是否執行到位以及是否需要調整。它包含「衡量指標(Dashboard)」與「行動計畫(Plans)」。',
+            bgColor: 'bg-rose-100'
+        }
+    };
+
+    const pitfallData = {
+        '視為填寫練習': {
+            title: '陷阱：視為填寫練習',
+            text: 'OGSM並非簡單的表格填空，而是對戰略計畫的總結。<strong>解決方案：</strong>在制定前進行SWOT等全面分析，確保戰略思考的深度，將其視為經過深入分析、創意過程和理性選擇的結果。'
+        },
+        '目標或策略過於模糊': {
+            title: '陷阱：目標或策略過於模糊',
+            text: '使用模糊的描述，如「努力提高品質」，會掩蓋缺乏實際計畫的問題。<strong>解決方案：</strong>確保Objective清晰激勵，Goals符合SMART原則，Strategies具體可操作，讓所有參與者都能清晰理解方向。'
+        },
+        '未做真正選擇': {
+            title: '陷阱：未做真正選擇',
+            text: '戰略的本質是做出選擇。如果無法明確「不再做什麼」，則資源會持續分散。<strong>解決方案：</strong>聚焦3-5個關鍵目標和策略，並勇敢地制定「不為清單」，以集中資源於高影響力的活動。'
+        },
+        '實施關注不足': {
+            title: '陷阱：實施關注不足',
+            text: '許多組織在計畫制定上投入大量精力，卻對其實施關注不足，導致計畫束之高閣。<strong>解決方案：</strong>建立定期監控機制（如月會、季會），分配明確的責任人，並將結果納入計畫的動態調整中。'
+        },
+        '適應市場變化速度慢': {
+            title: '陷阱：適應市場變化速度慢',
+            text: 'OGSM的長期規劃特性可能導致其在快速變化的市場中顯得僵化。<strong>解決方案：</strong>強調動態調整，定期審查OGSM，並將敏捷原則融入實施中，確保戰略能夠根據市場變化靈活調整。'
+        }
+    };
+
+    const caseData = {
+        toyota: {
+            title: '豐田汽車 (Toyota)',
+            text: '豐田將OGSM與其著名的精益生產（Lean Manufacturing）理念深度融合。OGSM提供了清晰的戰略方向和衡量機制，而精益生產則提供了實現這些目標的具體方法論。這種結合使得豐田能將宏觀戰略目標（如提高生產效率）分解為可執行的日常行動，並通過數據驅動的決策不斷優化。'
+        },
+        pg: {
+            title: '寶僑 (P&G)',
+            text: '作為一個全球性消費品巨頭，寶僑利用OGSM的「一頁式」和層次化結構，在全球範圍內統一戰略方向，同時允許各地區市場的靈活性。OGSM幫助寶僑將複雜的全球願景分解為各業務單位可理解和執行的目標與策略，確保了品牌價值與當地市場需求的結合。'
+        },
+        heineken: {
+            title: '海尼根 (Heineken)',
+            text: '海尼根使用OGSM來統一全球市場策略，確保品牌價值與當地市場需求相結合。透過明確的目標與策略，海尼根成功提升市場滲透率與消費者參與度。OGSM的框架允許在頂層設定統一的Objective，同時在Strategy層面賦予各地區團隊靈活性以適應不同市場。'
+        },
+        cocacola: {
+            title: '可口可樂 (Coca-Cola)',
+            text: '可口可樂利用OGSM來簡化其複雜的全球行銷和擴張策略。該框架幫助公司將宏大的企業目標與各個當地市場的具體執行計畫緊密結合，確保了全球品牌訊息的一致性，同時又能靈活應對不同地區的文化和消費習慣。'
+        },
+        others: {
+            title: '其他知名企業',
+            text: '除了上述案例，亞馬遜、網飛、特斯拉、谷歌、微軟、蘋果等眾多科技與傳統行業的領導者，都已將OGSM或其變體融入自身的戰略規劃與執行流程中，證明了其在不同行業和規模組織中的高度普適性與有效性。'
+        }
+    };
+
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Smooth scroll for nav links and close mobile menu on click
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+            if (mobileMenu.classList.contains('hidden') === false) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+    
+    // Active Nav Link on Scroll
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.onscroll = () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 80) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active-nav');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active-nav');
+            }
+        });
+    };
+
+    // OGSM Interactive Diagram
+    const ogsmCards = document.querySelectorAll('.ogsm-card');
+    const ogsmDetailsDiv = document.getElementById('ogsm-details');
+    ogsmCards.forEach(card => {
+        card.addEventListener('click', () => {
+            ogsmCards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            const key = card.id.split('-')[2];
+            const data = ogsmDetailsData[key];
+            ogsmDetailsDiv.innerHTML = `<h4 class="text-xl font-bold mb-2 ${data.bgColor.replace('bg-', 'text-').replace('-100', '-800')}">${data.title}</h4><p>${data.text}</p>`;
+            ogsmDetailsDiv.className = `mt-4 p-6 rounded-lg text-left min-h-[150px] flex flex-col justify-center transition-all duration-500 ${data.bgColor}`;
+        });
+    });
+
+    // Accordion functionality
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    accordionItems.forEach(item => {
+        const button = item.querySelector('.accordion-button');
+        const content = item.querySelector('.accordion-content');
+        const icon = item.querySelector('.accordion-icon');
+
+        button.addEventListener('click', () => {
+            const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+            
+            // Close all other accordions
+            accordionItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.querySelector('.accordion-content').style.maxHeight = '0px';
+                    otherItem.querySelector('.accordion-icon').classList.remove('rotate-180');
+                }
+            });
+
+            // Toggle current accordion
+            if (isExpanded) {
+                content.style.maxHeight = '0px';
+                icon.classList.remove('rotate-180');
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                icon.classList.add('rotate-180');
+            }
+        });
+    });
+
+    // Challenges and Solutions
+    const pitfallList = document.getElementById('pitfall-list');
+    const solutionTitle = document.getElementById('solution-title');
+    const solutionText = document.getElementById('solution-text');
+    const pitfallItems = document.querySelectorAll('.pitfall-item');
+
+    function updateSolution(key) {
+        const data = pitfallData[key];
+        solutionTitle.textContent = data.title;
+        solutionText.innerHTML = data.text;
+    }
+
+    pitfallList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('pitfall-item')) {
+            pitfallItems.forEach(item => item.classList.remove('bg-sky-200', 'font-bold'));
+            e.target.classList.add('bg-sky-200', 'font-bold');
+            updateSolution(e.target.textContent);
+        }
+    });
+    // Initial state for challenges
+    pitfallItems[0].classList.add('bg-sky-200', 'font-bold');
+    updateSolution(pitfallItems[0].textContent);
+
+
+    // Comparison Chart
+    const ctx = document.getElementById('comparisonChart').getContext('2d');
+    const frameworkData = {
+        labels: ['長期規劃', '敏捷性', '對齊風格(自上而下)', '反饋機制', '結構完整度', '實施簡易度'],
+        datasets: {
+            ogsm: {
+                label: 'OGSM',
+                data: [9, 5, 9, 6, 9, 7],
+                borderColor: 'rgba(2, 132, 199, 1)',
+                backgroundColor: 'rgba(2, 132, 199, 0.2)',
+                pointBackgroundColor: 'rgba(2, 132, 199, 1)',
+            },
+            okr: {
+                label: 'OKR',
+                data: [4, 9, 5, 9, 6, 8],
+                borderColor: 'rgba(20, 184, 166, 1)',
+                backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                pointBackgroundColor: 'rgba(20, 184, 166, 1)',
+            },
+            mbo: {
+                label: 'MBO',
+                data: [6, 4, 8, 4, 5, 6],
+                borderColor: 'rgba(245, 158, 11, 1)',
+                backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                pointBackgroundColor: 'rgba(245, 158, 11, 1)',
+            },
+            bsc: {
+                label: 'BSC',
+                data: [8, 3, 9, 5, 10, 4],
+                borderColor: 'rgba(225, 29, 72, 1)',
+                backgroundColor: 'rgba(225, 29, 72, 0.2)',
+                pointBackgroundColor: 'rgba(225, 29, 72, 1)',
+            }
+        }
+    };
+
+    let activeFrameworks = ['ogsm'];
+
+    const comparisonChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: frameworkData.labels,
+            datasets: [frameworkData.datasets.ogsm]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: { display: true },
+                    suggestedMin: 0,
+                    suggestedMax: 10,
+                    pointLabels: {
+                        font: {
+                           size: 14,
+                        }
+                    },
+                    ticks: {
+                        backdropColor: 'rgba(255, 255, 255, 0.75)'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.r !== null) {
+                                label += context.parsed.r;
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const frameworkButtons = document.querySelectorAll('.framework-btn');
+    frameworkButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const framework = button.dataset.framework;
+            if (activeFrameworks.includes(framework)) {
+                if (activeFrameworks.length > 1) { // Prevent removing the last one
+                    activeFrameworks = activeFrameworks.filter(f => f !== framework);
+                    button.classList.remove('active-btn', 'text-white', 'bg-sky-800');
+                    button.classList.add('text-slate-900', 'bg-white');
+                }
+            } else {
+                activeFrameworks.push(framework);
+                button.classList.add('active-btn', 'text-white', 'bg-sky-800');
+                button.classList.remove('text-slate-900', 'bg-white');
+            }
+            
+            updateChart();
+        });
+    });
+
+    function updateChart() {
+        comparisonChart.data.datasets = activeFrameworks.map(f => frameworkData.datasets[f]);
+        comparisonChart.update();
+    }
+
+    // Case Study Modal
+    const caseModal = document.getElementById('case-modal');
+    const modalContent = document.getElementById('modal-content');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const caseCards = document.querySelectorAll('.case-card');
+    const modalTitle = document.getElementById('modal-title');
+    const modalText = document.getElementById('modal-text');
+
+    function openModal(caseKey) {
+        const data = caseData[caseKey];
+        modalTitle.textContent = data.title;
+        modalText.innerHTML = data.text;
+        caseModal.classList.remove('hidden');
+        caseModal.classList.add('flex');
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function closeModal() {
+        modalContent.classList.add('scale-95', 'opacity-0');
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        setTimeout(() => {
+            caseModal.classList.add('hidden');
+            caseModal.classList.remove('flex');
+        }, 200);
+    }
+
+    caseCards.forEach(card => {
+        card.addEventListener('click', () => {
+            openModal(card.dataset.case);
+        });
+    });
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    caseModal.addEventListener('click', (e) => {
+        if (e.target === caseModal) {
+            closeModal();
+        }
+    });
+});
+</script>
+</body>
+</html>

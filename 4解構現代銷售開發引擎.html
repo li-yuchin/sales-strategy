@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式銷售開發策略儀表板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Modern Professional (Warm Beige, Dark Gray, Muted Teal) -->
+    <!-- Application Structure Plan: A thematic, single-page application designed as an interactive playbook. The structure flows from foundational philosophy to specific channel tactics (Email/Phone), then to integrated campaign strategy, and finally to an actionable implementation plan. This non-linear, tool-oriented structure was chosen over a simple report summary to allow users to explore, compare, and reference specific tactics on-demand, enhancing learning and practical application. Key interactions include data visualizations for impact, interactive diagrams to deconstruct frameworks, and dynamic content selectors to simulate real-world application of scripts. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Sales rep contact statistics -> Goal: Compare reality vs. best practice -> Viz: Chart.js Donut Chart -> Interaction: Hover for details -> Justification: Clearly shows the gap between the few who succeed and the many who don't.
+        - Report Info: AIDA framework -> Goal: Organize a process -> Viz: HTML/CSS funnel diagram -> Interaction: Click stage to see details -> Justification: Makes a theoretical model tangible and explorable.
+        - Report Info: WYWYN Email/Call Formula -> Goal: Organize steps -> Viz: Interactive HTML/CSS stepper/cards -> Interaction: Click to reveal scripts/tips -> Justification: Breaks down complex tactics into digestible, actionable steps.
+        - Report Info: Referral success rates -> Goal: Compare metrics -> Viz: Chart.js Bar Chart -> Interaction: Hover for percentages -> Justification: A powerful visual to emphasize the strategic importance of referrals.
+        - Report Info: Implementation plan -> Goal: Organize actions -> Viz: HTML/CSS accordion -> Interaction: Click to expand weeks -> Justification: Presents a dense plan in a clean, manageable format.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #FDFBF7;
+            color: #374151;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #0891B2;
+            border-bottom-color: #0891B2;
+        }
+        .tab-button {
+            transition: all 0.3s;
+        }
+        .tab-button.active {
+            background-color: #0891B2;
+            color: white;
+        }
+        .step-item.active .step-circle {
+            background-color: #0891B2;
+            color: white;
+            border-color: #0891B2;
+        }
+        .step-item.active .step-title {
+            color: #0891B2;
+            font-weight: 700;
+        }
+        .funnel-segment {
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .funnel-segment.active {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+        .wywyn-component.active {
+            background-color: #cffafe;
+            border-color: #0891B2;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-cyan-700">銷售開發儀表板</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#principles" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">核心原則</a>
+                        <a href="#playbook" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">戰術手冊</a>
+                        <a href="#campaign" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">整合戰役</a>
+                        <a href="#implementation" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">執行藍圖</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 bg-amber-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 tracking-tight">解構現代銷售開發引擎</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">一份將PTC銷售方法論轉化為可互動、可實踐的戰術儀表板，助您贏得更多高價值客戶。</p>
+            </div>
+        </section>
+
+        <section id="principles" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">高效開發的核心原則</h2>
+                    <p class="mt-2 text-lg text-gray-600">成功的開發始於正確的思維模式與數據洞察。本區將展示支撐所有戰術的基礎理念。</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+                    
+                    <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-center mb-4 text-cyan-800">AIDA 價值交換模型</h3>
+                        <p class="text-sm text-gray-600 mb-4 text-center">銷售互動的本質是價值交換。點擊下方階段，了解如何「贏得」客戶的每一步。</p>
+                        <div id="aida-funnel" class="space-y-1">
+                            <div data-content="aida-attention" class="funnel-segment bg-cyan-100 text-cyan-800 p-3 rounded-t-lg text-center font-semibold">
+                                <span class="text-2xl">A</span>ttention (引起注意)
+                            </div>
+                            <div data-content="aida-interest" class="funnel-segment bg-cyan-200 text-cyan-900 p-3 text-center font-semibold w-5/6 mx-auto">
+                                <span class="text-2xl">I</span>nterest (啟發興趣)
+                            </div>
+                            <div data-content="aida-desire" class="funnel-segment bg-cyan-300 text-cyan-900 p-3 text-center font-semibold w-4/6 mx-auto">
+                                <span class="text-2xl">D</span>esire (產生慾望)
+                            </div>
+                            <div data-content="aida-action" class="funnel-segment bg-cyan-400 text-cyan-900 p-3 rounded-b-lg text-center font-semibold w-3/6 mx-auto">
+                                <span class="text-2xl">A</span>ction (購買行動)
+                            </div>
+                        </div>
+                        <div id="aida-content-display" class="mt-4 p-4 bg-gray-50 rounded-lg min-h-[120px]">
+                            <!-- Content will be injected here -->
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-center mb-4 text-cyan-800">「5次接觸」的鴻溝</h3>
+                        <p class="text-sm text-gray-600 mb-4 text-center">數據顯示，80%的成交需要5次以上接觸，但多數銷售代表在第一次後就放棄了。這張圖表揭示了成功與失敗的關鍵行為差異。</p>
+                        <div class="chart-container">
+                            <canvas id="touchpointsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-center mb-4 text-cyan-800">頂尖銷售的心理素質</h3>
+                        <p class="text-sm text-gray-600 mb-4 text-center">執行高強度開發策略需要強大的心理韌性。以下是成功者的共同特質。</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-cyan-500 mr-3 mt-1">✓</span>
+                                <div><strong class="font-semibold">100%責任感:</strong> 將結果視為系統執行的一部分，而非個人能力的評判。</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-cyan-500 mr-3 mt-1">✓</span>
+                                <div><strong class="font-semibold">不個人化拒絕:</strong> 面對高拒絕率，保持心理韌性，持續執行多點接觸策略。</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-cyan-500 mr-3 mt-1">✓</span>
+                                <div><strong class="font-semibold">目標導向:</strong> 使用S.M.A.R.T原則，將宏觀目標分解為可執行的日常任務。</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-cyan-500 mr-3 mt-1">✓</span>
+                                <div><strong class="font-semibold">擁抱不適:</strong> 具備走出舒適圈，主動接觸陌生人的能力。</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="playbook" class="py-16 md:py-24 bg-amber-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">Email & 電話戰術手冊</h2>
+                    <p class="mt-2 text-lg text-gray-600">掌握Email與電話開發的藝術與科學。切換下方頁籤，探索不同渠道的致勝策略。</p>
+                </div>
+                
+                <div class="flex justify-center mb-8">
+                    <div class="bg-white rounded-full p-1 shadow-md">
+                        <button id="email-tab-btn" class="tab-button active px-6 py-2 rounded-full text-sm font-semibold">📧 Email Playbook</button>
+                        <button id="phone-tab-btn" class="tab-button px-6 py-2 rounded-full text-sm font-semibold">📞 Phone Playbook</button>
+                    </div>
+                </div>
+
+                <div id="email-playbook" class="playbook-content">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-cyan-800">WYWYN 郵件解剖學</h3>
+                            <p class="mb-6 text-gray-600">「Why You, Why You Now?」是一種將公開資訊武器化的策略，用以創造即時關聯性。點擊下方組件，查看其核心要素與寫作技巧。</p>
+                            <div class="space-y-3">
+                                <div data-content="wywyn-subject" class="wywyn-component border-2 border-gray-200 p-4 rounded-lg cursor-pointer transition hover:bg-cyan-50">
+                                    <h4 class="font-bold">1. 主題 (Subject Line)</h4>
+                                </div>
+                                <div data-content="wywyn-whyyou" class="wywyn-component border-2 border-gray-200 p-4 rounded-lg cursor-pointer transition hover:bg-cyan-50">
+                                    <h4 class="font-bold">2. 為何是您 (Why You)</h4>
+                                </div>
+                                <div data-content="wywyn-whynow" class="wywyn-component border-2 border-gray-200 p-4 rounded-lg cursor-pointer transition hover:bg-cyan-50">
+                                    <h4 class="font-bold">3. 為何是現在 (Why You Now)</h4>
+                                </div>
+                                <div data-content="wywyn-proof" class="wywyn-component border-2 border-gray-200 p-4 rounded-lg cursor-pointer transition hover:bg-cyan-50">
+                                    <h4 class="font-bold">4. 支持資訊/證據 (Proof)</h4>
+                                </div>
+                                <div data-content="wywyn-cta" class="wywyn-component border-2 border-gray-200 p-4 rounded-lg cursor-pointer transition hover:bg-cyan-50">
+                                    <h4 class="font-bold">5. 行動呼籲 (Call To Action)</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <div id="wywyn-content-display" class="min-h-[300px]">
+                                <!-- Content will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="phone-playbook" class="playbook-content hidden">
+                    <div class="grid md:grid-cols-2 gap-8 items-start">
+                        <div>
+                           <h3 class="text-2xl font-bold mb-4 text-cyan-800">致勝電話方程式</h3>
+                           <p class="mb-6 text-gray-600">成功的電話開發遵循一個嚴謹的五步公式。點擊下方步驟，查看各階段的目標與腳本範例。</p>
+                           <div id="call-steps" class="space-y-4">
+                               <div data-content="call-intro" class="step-item flex items-start cursor-pointer">
+                                   <div class="step-circle flex-shrink-0 bg-white border-2 border-gray-300 rounded-full w-8 h-8 flex items-center justify-center font-bold text-gray-500 mr-4 transition">1</div>
+                                   <div>
+                                       <h4 class="step-title font-semibold text-lg transition">強而有力的開場白</h4>
+                                       <div class="step-content text-gray-600 text-sm mt-1 hidden"></div>
+                                   </div>
+                               </div>
+                               <div data-content="call-pitch" class="step-item flex items-start cursor-pointer">
+                                   <div class="step-circle flex-shrink-0 bg-white border-2 border-gray-300 rounded-full w-8 h-8 flex items-center justify-center font-bold text-gray-500 mr-4 transition">2</div>
+                                   <div>
+                                       <h4 class="step-title font-semibold text-lg transition">15秒電梯演說 (EP)</h4>
+                                       <div class="step-content text-gray-600 text-sm mt-1 hidden"></div>
+                                   </div>
+                               </div>
+                               <div data-content="call-engage" class="step-item flex items-start cursor-pointer">
+                                   <div class="step-circle flex-shrink-0 bg-white border-2 border-gray-300 rounded-full w-8 h-8 flex items-center justify-center font-bold text-gray-500 mr-4 transition">3</div>
+                                   <div>
+                                       <h4 class="step-title font-semibold text-lg transition">互動的理由 (4C法則)</h4>
+                                       <div class="step-content text-gray-600 text-sm mt-1 hidden"></div>
+                                   </div>
+                               </div>
+                               <div data-content="call-cta" class="step-item flex items-start cursor-pointer">
+                                   <div class="step-circle flex-shrink-0 bg-white border-2 border-gray-300 rounded-full w-8 h-8 flex items-center justify-center font-bold text-gray-500 mr-4 transition">4</div>
+                                   <div>
+                                       <h4 class="step-title font-semibold text-lg transition">行動呼籲 (CTA)</h4>
+                                       <div class="step-content text-gray-600 text-sm mt-1 hidden"></div>
+                                   </div>
+                               </div>
+                               <div data-content="call-contact" class="step-item flex items-start cursor-pointer">
+                                   <div class="step-circle flex-shrink-0 bg-white border-2 border-gray-300 rounded-full w-8 h-8 flex items-center justify-center font-bold text-gray-500 mr-4 transition">5</div>
+                                   <div>
+                                       <h4 class="step-title font-semibold text-lg transition">結束與聯絡資訊</h4>
+                                       <div class="step-content text-gray-600 text-sm mt-1 hidden"></div>
+                                   </div>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <h4 class="text-lg font-bold mb-3 text-cyan-800">電梯演說產生器</h4>
+                            <p class="text-sm text-gray-600 mb-4">根據不同聽眾的角色調整您的價值主張。選擇一個目標角色，查看為其量身打造的15秒電梯演說。</p>
+                            <select id="pitch-selector" class="w-full p-2 border border-gray-300 rounded-md mb-4">
+                                <option value="vp_eng">工程副總</option>
+                                <option value="cfo">財務長</option>
+                                <option value="ceo">執行長</option>
+                            </select>
+                            <div id="pitch-display" class="p-4 bg-gray-50 rounded-lg min-h-[150px]">
+                                <!-- Pitch will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="campaign" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">整合性多點接觸戰役</h2>
+                    <p class="mt-2 text-lg text-gray-600">將Email與電話結合，策劃一場持續30天的開發戰役，以獲取高價值的內部引薦為最終目標。</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-cyan-800">30天5次接觸序列範例</h3>
+                        <div class="relative border-l-2 border-cyan-200 pl-8 space-y-10">
+                            <div class="absolute w-4 h-4 bg-cyan-500 rounded-full -left-2 top-1"></div>
+                            <div>
+                                <h4 class="font-bold">第1天: WYWYN Email</h4>
+                                <p class="text-gray-600">以高度個人化的郵件進行「空中轟炸」，為後續接觸鋪路。</p>
+                            </div>
+                            <div class="absolute w-4 h-4 bg-cyan-500 rounded-full -left-2 top-1/4"></div>
+                            <div>
+                                <h4 class="font-bold">第3天: 電話跟催 & 語音留言</h4>
+                                <p class="text-gray-600">引用前封郵件進行「暖」電話跟進。若無人接聽，留下簡潔有力的語音留言。</p>
+                            </div>
+                            <div class="absolute w-4 h-4 bg-cyan-500 rounded-full -left-2 top-2/4"></div>
+                            <div>
+                                <h4 class="font-bold">第10天: 第二封 Email</h4>
+                                <p class="text-gray-600">從不同角度提供新價值，例如分享相關的客戶案例或行業報告。</p>
+                            </div>
+                            <div class="absolute w-4 h-4 bg-cyan-500 rounded-full -left-2 top-3/4"></div>
+                             <div>
+                                <h4 class="font-bold">第15天: 最終電話跟催</h4>
+                                <p class="text-gray-600">做出最終嘗試，確認合適的聯絡人，或將其歸入長期培養序列。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-center mb-4 text-cyan-800">引薦的力量：開發的真正勝利</h3>
+                        <p class="text-sm text-gray-600 mb-4 text-center">數據顯示，來自高層的內部引薦，其成功率遠高於外部引薦。這證明了「由上而下」開發策略的巨大威力。</p>
+                        <div class="chart-container">
+                            <canvas id="referralChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="implementation" class="py-16 md:py-24 bg-amber-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">執行藍圖與工具</h2>
+                    <p class="mt-2 text-lg text-gray-600">將理論化為行動。這是一個為期30天的衝刺計畫，助您將新技能內化為日常習慣。</p>
+                </div>
+                <div class="max-w-3xl mx-auto">
+                    <div id="sprint-plan" class="space-y-4">
+                        <!-- Accordion items will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm">
+            <p>&copy; 2025 互動式銷售開發儀表板。基於PTC銷售培訓材料分析建構。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const data = {
+                aida: {
+                    'aida-attention': { title: '引起注意 (5-15秒)', text: '目標是「購買」客戶寶貴的15秒認知空間。必須提供即時的關聯性，例如引用客戶公司最近的新聞或高管發言。' },
+                    'aida-interest': { title: '啟發興趣 (2分鐘)', text: '成功轉化「注意」後的成果。利用最初的掛鉤，建構一個引人入勝的敘事，爭取更深度的2分鐘互動。' },
+                    'aida-desire': { title: '產生慾望 (15-60分鐘)', text: '充分闡述價值主張，將客戶的興趣轉化為對解決方案的強烈需求。展示成功案例和具體效益。' },
+                    'aida-action': { title: '購買行動 (3-6個月)', text: '最終的轉化目標，促使客戶採取實質的購買決策。這需要持續的跟進和價值提供。' }
+                },
+                wywyn: {
+                    'wywyn-subject': { title: '1. 主題 (Subject Line)', text: '必須具有啟發性，並以「您的…」開頭，創造即時的個人關聯性。例如：「關於您在[會議名稱]中提到的供應鏈效率目標」。' },
+                    'wywyn-whyyou': { title: '2. 為何是您 (Why You)', text: '具體提及與客戶公司或其個人相關的事件、言論或成就。這證明您在發信前已做足功課，建立初步可信度。' },
+                    'wywyn-whynow': { title: '3. 為何是現在 (Why You Now)', text: '建立一個與「Why You」觸發點相關的商業連結，將客戶的事件與您公司的價值主張巧妙地聯繫起來。' },
+                    'wywyn-proof': { title: '4. 支持資訊/證據 (Proof)', text: '一段簡短而有力的陳述，用以建立可信度。提及3個知名的客戶案例是極為有效的方式，提供社會認同。' },
+                    'wywyn-cta': { title: '5. 行動呼籲 (Call To Action)', text: '提出一個易於執行、低摩擦力的開放式問題，旨在請求引薦或下一步資訊，而非直接要求會議。例如：「誰是貴公司最適合討論此議題的人選？」' }
+                },
+                callSteps: {
+                    'call-intro': '目標：立即建立專業基調，避免閒聊。範例：「我是PTC的John，我打這通電話的原因是…」',
+                    'call-pitch': '目標：在15秒內提供價值，引發好奇心。範例：「我在您最近的新聞稿中讀到您談到…」',
+                    'call-engage': '目標：將初步注意轉化為2分鐘的實質興趣。運用確認主題(Confirmation)、取得信任(Credibility)、成功關鍵(Criticality)、我有辦法(Capability)的邏輯流程。',
+                    'call-cta': '目標：獲得一個明確的下一步承諾（通常是引薦）。範例：「我想請他指點一下，誰是討論這個問題的最佳人選。」',
+                    'call-contact': '目標：專業地結束通話，並在留言時清晰留下資訊。範例：「This is Julian Lee with PTC, 07732 189 587.」'
+                },
+                pitches: {
+                    'vp_eng': '「我們幫助像[貴公司競品]這樣的公司，將新產品開發時間縮短了60%，同時還能滿足複雜的法規要求。許多工程主管都很好奇我們是如何做到的。」',
+                    'cfo': '「我們專門協助像貴公司這樣的企業，透過優化產品開發流程，實現超過300%的投資回報率並顯著降低運營成本。許多財務長都想了解其中的財務模型。」',
+                    'ceo': '「我們幫助像Schindler這樣的全球領導者，將全球團隊的協同效率提升了三倍，直接加速了他們的市場擴張策略。許多CEO都對我們如何支持他們的增長目標感興趣。」'
+                },
+                sprintPlan: [
+                    { week: 1, focus: '基礎建設與WYWYN郵件', tasks: '1. 識別25個目標客戶。<br>2. 進行情報收集，找到「Why You」觸發點。<br>3. 撰寫並發送至少10封WYWYN郵件。', metrics: '完成情報收集；發送郵件數量；郵件回應率。' },
+                    { week: 2, focus: '電梯演說與首次電話跟催', tasks: '1. 打造針對不同角色的電梯演說。<br>2. 內部角色扮演，練習「致勝電話方程式」。<br>3. 對第一週的郵件進行電話跟催。', metrics: '完成EP腳本；電話跟催數量；獲得引薦數量。' },
+                    { week: 3, focus: '多點接觸與4C法則應用', tasks: '1. 發送第二輪WYWYN郵件。<br>2. 在電話中應用4C法則深化興趣。<br>3. 練習應對守門員和留下高效語音留言。', metrics: '第二輪郵件回應率；成功應用4C法則案例數。' },
+                    { week: 4, focus: '分析、改進與經驗分享', tasks: '1. 分析前三週數據，優化模板和腳本。<br>2. 舉行團隊會議，分享成功案例和挑戰。<br>3. 為下一個30天設定新目標。', metrics: '完成成功率報告；產生優化後的腳本v2.0。' }
+                ]
+            };
+
+            // Navigation scroll highlighting
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3
+            };
+
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+
+            // AIDA Funnel Interaction
+            const aidaFunnel = document.getElementById('aida-funnel');
+            const aidaContentDisplay = document.getElementById('aida-content-display');
+            aidaFunnel.addEventListener('click', function(e) {
+                const segment = e.target.closest('.funnel-segment');
+                if (segment) {
+                    const contentKey = segment.dataset.content;
+                    const contentData = data.aida[contentKey];
+                    
+                    aidaFunnel.querySelectorAll('.funnel-segment').forEach(s => s.classList.remove('active'));
+                    segment.classList.add('active');
+
+                    aidaContentDisplay.innerHTML = `
+                        <h4 class="font-bold text-cyan-800">${contentData.title}</h4>
+                        <p class="text-sm text-gray-700 mt-2">${contentData.text}</p>
+                    `;
+                }
+            });
+            aidaFunnel.querySelector('.funnel-segment').click();
+
+            // Touchpoints Chart
+            const touchpointsCtx = document.getElementById('touchpointsChart').getContext('2d');
+            new Chart(touchpointsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['1次接觸 (48%)', '2次接觸 (25%)', '3次接觸 (12%)', '4次接觸 (10%)', '5次以上接觸 (5%)'],
+                    datasets: [{
+                        label: '銷售代表接觸次數分佈',
+                        data: [48, 25, 12, 10, 5],
+                        backgroundColor: ['#67e8f9', '#22d3ee', '#06b6d4', '#0891b2', '#0e7490'],
+                        borderColor: '#FDFBF7',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', 'Noto Sans TC', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}% 的銷售代表`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Playbook Tabs
+            const emailTabBtn = document.getElementById('email-tab-btn');
+            const phoneTabBtn = document.getElementById('phone-tab-btn');
+            const emailPlaybook = document.getElementById('email-playbook');
+            const phonePlaybook = document.getElementById('phone-playbook');
+
+            emailTabBtn.addEventListener('click', () => {
+                emailTabBtn.classList.add('active');
+                phoneTabBtn.classList.remove('active');
+                emailPlaybook.classList.remove('hidden');
+                phonePlaybook.classList.add('hidden');
+            });
+
+            phoneTabBtn.addEventListener('click', () => {
+                phoneTabBtn.classList.add('active');
+                emailTabBtn.classList.remove('active');
+                phonePlaybook.classList.remove('hidden');
+                emailPlaybook.classList.add('hidden');
+            });
+
+            // WYWYN Interaction
+            const wywynComponents = document.querySelectorAll('.wywyn-component');
+            const wywynContentDisplay = document.getElementById('wywyn-content-display');
+            wywynComponents.forEach(component => {
+                component.addEventListener('click', () => {
+                    const contentKey = component.dataset.content;
+                    const contentData = data.wywyn[contentKey];
+
+                    wywynComponents.forEach(c => c.classList.remove('active'));
+                    component.classList.add('active');
+                    
+                    wywynContentDisplay.innerHTML = `
+                        <h4 class="text-xl font-bold text-cyan-800 mb-3">${contentData.title}</h4>
+                        <p class="text-gray-700">${contentData.text}</p>
+                    `;
+                });
+            });
+            document.querySelector('.wywyn-component').click();
+
+            // Call Steps Interaction
+            const callStepsContainer = document.getElementById('call-steps');
+            callStepsContainer.addEventListener('click', function(e) {
+                const stepItem = e.target.closest('.step-item');
+                if (stepItem) {
+                    const contentKey = stepItem.dataset.content;
+                    const content = data.callSteps[contentKey];
+                    const contentDiv = stepItem.querySelector('.step-content');
+
+                    if (stepItem.classList.contains('active')) {
+                        stepItem.classList.remove('active');
+                        contentDiv.classList.add('hidden');
+                    } else {
+                        callStepsContainer.querySelectorAll('.step-item').forEach(item => {
+                            item.classList.remove('active');
+                            item.querySelector('.step-content').classList.add('hidden');
+                        });
+                        stepItem.classList.add('active');
+                        contentDiv.textContent = content;
+                        contentDiv.classList.remove('hidden');
+                    }
+                }
+            });
+
+            // Pitch Generator
+            const pitchSelector = document.getElementById('pitch-selector');
+            const pitchDisplay = document.getElementById('pitch-display');
+            function updatePitch() {
+                const selectedRole = pitchSelector.value;
+                pitchDisplay.innerHTML = `<p class="text-gray-800 italic">"${data.pitches[selectedRole]}"</p>`;
+            }
+            pitchSelector.addEventListener('change', updatePitch);
+            updatePitch();
+
+            // Referral Chart
+            const referralCtx = document.getElementById('referralChart').getContext('2d');
+            new Chart(referralCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['內部引薦', '外部引薦'],
+                    datasets: [{
+                        label: '高階主管接見成功率',
+                        data: [84, 44],
+                        backgroundColor: ['#0891b2', '#a5f3fc'],
+                        borderColor: ['#0e7490', '#67e8f9'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Sprint Plan Accordion
+            const sprintPlanContainer = document.getElementById('sprint-plan');
+            data.sprintPlan.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white rounded-lg shadow-md overflow-hidden';
+                div.innerHTML = `
+                    <div class="p-4 cursor-pointer flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition accordion-toggle">
+                        <h4 class="text-lg font-semibold text-cyan-800">第 ${item.week} 週: ${item.focus}</h4>
+                        <span class="transform transition-transform text-cyan-600 text-2xl font-light">+</span>
+                    </div>
+                    <div class="p-4 border-t border-gray-200 hidden accordion-content">
+                        <strong class="block mb-2 text-gray-700">可執行任務:</strong>
+                        <p class="mb-4 text-gray-600">${item.tasks}</p>
+                        <strong class="block mb-2 text-gray-700">成功指標:</strong>
+                        <p class="text-gray-600">${item.metrics}</p>
+                    </div>
+                `;
+                sprintPlanContainer.appendChild(div);
+            });
+            
+            sprintPlanContainer.addEventListener('click', function(e) {
+                const toggle = e.target.closest('.accordion-toggle');
+                if (toggle) {
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('span');
+                    const isOpen = !content.classList.contains('hidden');
+
+                    if (isOpen) {
+                        content.classList.add('hidden');
+                        icon.classList.remove('rotate-45');
+                    } else {
+                        content.classList.remove('hidden');
+                        icon.classList.add('rotate-45');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

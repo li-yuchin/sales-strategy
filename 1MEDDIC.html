@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDDIC銷售架構師實戰工作坊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .main-header {
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+        .nav-button.active {
+            color: #3182ce;
+            border-bottom-color: #3182ce;
+            background-color: #ebf8ff;
+        }
+        .nav-button:hover {
+            background-color: #edf2f7;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+        .master-accordion-button {
+            transition: background-color 0.2s ease-out;
+            width: 100%;
+            text-align: left;
+        }
+        .master-accordion-button:hover {
+            background-color: #f7fafc;
+        }
+        .master-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .meddic-letter {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #e2e8f0;
+        }
+        .toggle-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="main-header text-white p-8 mb-8">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold">MEDDIC 銷售架構師實戰工作坊</h1>
+            <p class="mt-4 text-lg text-gray-300">融合經典框架與現代策略，為贏得複雜B2B軟體交易而生</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4">
+        <nav class="bg-white shadow-md rounded-lg mb-8 sticky top-4 z-10">
+            <div class="flex flex-wrap justify-center items-center">
+                <button class="nav-button p-3 md:p-4 font-semibold text-gray-600" data-target="intro">導論</button>
+                <button class="nav-button p-3 md:p-4 font-semibold text-gray-600" data-target="metrics">M - 指標</button>
+                <button class="nav-button p-3 md:p-4 font-semibold text-gray-600" data-target="economic_buyer">E - 經濟買家</button>
+                <button class="nav-button p-3 md:p-4 font-semibold text-gray-600" data-target="decision_criteria">D - 決策標準</button>
+                <button class="nav-button p-3 md:p-4 font-semibold text-gray-600" data-target="decision_process">D - 決策流程</button>
+                <button class="nav-button p-3 md:p-4 font-semibold text-gray-600" data-target="identify_pain">I - 識別痛點</button>
+                <button class="nav-button p-3 md:p-4 font-semibold text-gray-600" data-target="champion">C - 擁護者</button>
+                <button class="nav-button p-3 md:p-4 font-semibold text-gray-600" data-target="summary">總結</button>
+            </div>
+        </nav>
+
+        <main id="main-content">
+            <!-- 導論 -->
+            <section id="intro" class="content-section">
+                <div class="card p-8 text-center">
+                    <h2 class="text-3xl font-bold mb-4 text-gray-800">歡迎來到銷售的新紀元</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600 mb-6">在今日的B2B市場，買家掌握了前所未有的資訊與權力。傳統的銷售方法已不足以應對挑戰。成功的銷售人員不再是產品推銷員，而是「銷售架構師」——他們運用策略框架，為客戶設計通往成功的藍圖。</p>
+                    <p class="max-w-3xl mx-auto text-gray-600">MEDDIC正是這個藍圖的核心。它不是一個僵化的清單，而是一個動態的資格鑑定與策略規劃系統。本課程將教您如何將MEDDIC與現代銷售劇本（AI、價值共創、委員會銷售）結合，精準預測並贏得每一筆高價值訂單。</p>
+                </div>
+            </section>
+
+            <!-- M - 指標 -->
+            <section id="metrics" class="content-section">
+                <div class="card overflow-hidden">
+                    <button class="master-accordion-button p-8">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="meddic-letter mr-4">M</div>
+                                <div>
+                                    <h2 class="text-4xl font-bold text-gray-800">Metrics (指標)</h2>
+                                    <p class="text-lg text-gray-500">解決方案帶來的可量化經濟影響是什麼？</p>
+                                </div>
+                            </div>
+                            <span class="toggle-icon text-3xl text-gray-400">▼</span>
+                        </div>
+                    </button>
+                    <div class="master-accordion-content">
+                        <div class="px-8 pb-8">
+                            <p class="mb-6">指標是價值的語言，是將您的解決方案從「成本」轉變為「投資」的關鍵。它直接對應<span class="font-bold text-blue-600">【劇本二：價值共創】</span>，要求我們從推銷功能轉向證明可量化的業務成果。</p>
+                            <div class="space-y-6">
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">核心理念：將痛點轉化為金錢</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <p>客戶不會為了解決「問題」而付費，他們會為了解決「有經濟影響的問題」而付費。您的任務是與客戶合作，將他們的業務痛點（例如：流程效率低下、客戶流失率高）量化為具體的財務數字（例如：每年浪費50萬美元的人力成本、每年因流失損失100萬美元的收入）。</p>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">關鍵提問</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>「這個問題目前讓您付出了多少代價？（時間、資源、收入）」</li>
+                                            <li>「如果我們能將X指標提升Y%，這對您的年度營收意味著什麼？」</li>
+                                            <li>「您目前用來衡量這方面成功的關鍵績效指標(KPI)是什麼？」</li>
+                                            <li>「您希望在導入解決方案後的6個月、12個月內，看到哪些具體的數字改善？」</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-red-700">紅色警訊</h3>
+                                    <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                        <p class="text-red-600">如果客戶無法或不願與您一起量化問題的影響，這意味著：1) 問題的痛苦不夠強烈；2) 您尚未接觸到關心業務成果的正確人選。這筆交易的風險極高。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- E - 經濟買家 -->
+            <section id="economic_buyer" class="content-section">
+                 <div class="card overflow-hidden">
+                    <button class="master-accordion-button p-8">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="meddic-letter mr-4">E</div>
+                                <div>
+                                    <h2 class="text-4xl font-bold text-gray-800">Economic Buyer (經濟買家)</h2>
+                                    <p class="text-lg text-gray-500">誰對這筆預算擁有最終的批准權？</p>
+                                </div>
+                            </div>
+                            <span class="toggle-icon text-3xl text-gray-400">▼</span>
+                        </div>
+                    </button>
+                    <div class="master-accordion-content">
+                        <div class="px-8 pb-8">
+                            <p class="mb-6">經濟買家(EB)是唯一能對任何資金支出說「是」的人，即使這筆錢不在預算內。識別並接觸EB是<span class="font-bold text-blue-600">【劇本三：攻克採購委員會】</span>的核心，因為他們是委員會中權力最大的人。</p>
+                            <div class="space-y-6">
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">核心理念：權力線之上</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <p>EB通常位於組織的「權力線」之上，對損益(P&L)負責。他們關心的是策略、市場競爭力和業務增長，而不是產品的技術細節。您與EB的對話必須圍繞他們最關心的業務指標(Metrics)展開。</p>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">關鍵提問</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>「除了您之外，還有誰需要簽署這份合約？」</li>
+                                            <li>「這個專案的資金是從哪個部門的預算中撥出的？」</li>
+                                            <li>「您個人如何從這個專案的成功中受益？」</li>
+                                            <li>「如果專案超出預算，誰有權力批准額外資金？」</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-red-700">紅色警訊</h3>
+                                    <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                        <p class="text-red-600">如果您無法識別EB，或者您被告知「我們是委員會集體決策」，這意味著您還沒有找到真正的權力中心。如果您從未與EB直接對話，您對交易的控制權就非常低。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- D - 決策標準 -->
+            <section id="decision_criteria" class="content-section">
+                <div class="card overflow-hidden">
+                    <button class="master-accordion-button p-8">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="meddic-letter mr-4">D</div>
+                                <div>
+                                    <h2 class="text-4xl font-bold text-gray-800">Decision Criteria (決策標準)</h2>
+                                    <p class="text-lg text-gray-500">客戶將如何評估並選擇供應商？</p>
+                                </div>
+                            </div>
+                            <span class="toggle-icon text-3xl text-gray-400">▼</span>
+                        </div>
+                    </button>
+                    <div class="master-accordion-content">
+                        <div class="px-8 pb-8">
+                            <p class="mb-6">決策標準是客戶用來比較選項的「評分卡」。在<span class="font-bold text-blue-600">【劇本四：混合式銷售樞紐】</span>的時代，買家在接觸您之前，就已經透過線上研究形成了初步標準。您的任務是影響、塑造甚至重新定義這些標準，使其對您有利。</p>
+                            <div class="space-y-6">
+                               <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">核心理念：打造不公平的優勢</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <p>不要被動地回應客戶的標準，要主動地建立標準。透過分享案例研究、白皮書和獨特的行業洞察，您可以引入客戶未曾考慮過的標準，而這些標準恰好是您的獨特優勢。例如，如果您的軟體安全性是業界頂尖，就要確保「最高級別的數據加密」成為客戶評分表上的一項。</p>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">關鍵提問</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>「您將如何評估不同方案的優劣？有哪些具體的標準？」</li>
+                                            <li>「除了技術功能，您對供應商的哪些方面（如支援、行業經驗）有要求？」</li>
+                                            <li>「是否有任何『必須具備』的功能或標準，缺少任何一項都會被淘汰？」</li>
+                                            <li>「這些標準是如何制定的？誰參與了制定過程？」</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-red-700">紅色警訊</h3>
+                                    <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                        <p class="text-red-600">如果客戶的決策標準模糊不清，或者完全是根據競爭對手的規格書寫的，這是一個巨大的危險信號。這意味著您沒有控制住評估過程，正在被動地參與一場對您不利的比賽。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- D - 決策流程 -->
+            <section id="decision_process" class="content-section">
+                <div class="card overflow-hidden">
+                    <button class="master-accordion-button p-8">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="meddic-letter mr-4">D</div>
+                                <div>
+                                    <h2 class="text-4xl font-bold text-gray-800">Decision Process (決策流程)</h2>
+                                    <p class="text-lg text-gray-500">客戶將如何一步步做出最終決定？</p>
+                                </div>
+                            </div>
+                            <span class="toggle-icon text-3xl text-gray-400">▼</span>
+                        </div>
+                    </button>
+                    <div class="master-accordion-content">
+                        <div class="px-8 pb-8">
+                            <p class="mb-6">如果說決策標準是「什麼」，那麼決策流程就是「如何」和「何時」。它揭示了從評估到簽署合約的具體路徑圖，包括時間線、關鍵事件和所有參與者。這同樣是<span class="font-bold text-blue-600">【劇本三：攻克採購委員會】</span>的關鍵戰術。</p>
+                            <div class="space-y-6">
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">核心理念：從不確定到可預測</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <p>不了解決策流程的銷售，就像在沒有地圖的迷霧中航行。您的目標是與客戶（特別是您的擁護者）一起，清晰地繪製出每一步。這不僅能讓您準確預測成交日期，更能讓您在關鍵節點提前佈局，避免意外發生。</p>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">關鍵提問</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>「能否帶我走一遍，從今天到簽署合約，中間會經過哪些步驟？」</li>
+                                            <li>「在每個步驟中，誰是主要的參與者和批准者？」</li>
+                                            <li>「技術驗證、法律審查和採購流程分別需要多長時間？」</li>
+                                            <li>「我們需要在哪個日期前完成這一切，才能趕上您的專案啟動時間？」</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-red-700">紅色警訊</h3>
+                                    <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                        <p class="text-red-600">如果客戶對流程的描述含糊其辭（例如「我們會內部討論一下」），或者流程中存在您無法接觸到的「黑箱」環節，這意味著您對交易的控制力很弱，成交預測將非常不準確。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- I - 識別痛點 -->
+            <section id="identify_pain" class="content-section">
+                <div class="card overflow-hidden">
+                    <button class="master-accordion-button p-8">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="meddic-letter mr-4">I</div>
+                                <div>
+                                    <h2 class="text-4xl font-bold text-gray-800">Identify Pain (識別痛點)</h2>
+                                    <p class="text-lg text-gray-500">客戶不採取行動的後果是什麼？</p>
+                                </div>
+                            </div>
+                            <span class="toggle-icon text-3xl text-gray-400">▼</span>
+                        </div>
+                    </button>
+                    <div class="master-accordion-content">
+                        <div class="px-8 pb-8">
+                            <p class="mb-6">痛點是所有銷售的起點。沒有痛點，就沒有改變的動力。現代銷售的挑戰在於，要將表面問題與深層次的業務痛點聯繫起來，並利用<span class="font-bold text-blue-600">【劇本一：AI賦能】</span>來更高效、更精準地識別和驗證這些痛點。</p>
+                            <div class="space-y-6">
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">核心理念：痛點的層次</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <p>痛點分為三個層次：<br><strong>1. 技術層面：</strong>「我們的舊系統經常崩潰。」<br><strong>2. 業務層面：</strong>「系統崩潰導致我們每月損失5%的訂單。」<br><strong>3. 個人層面：</strong>「如果訂單持續流失，我的部門將無法達成年度目標，我的獎金也會受影響。」<br>最有效的銷售是觸及業務和個人層面的痛點。</p>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">關鍵提問</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>「這個挑戰對您的團隊日常工作造成了什麼影響？」</li>
+                                            <li>「如果這個問題在未來六個月內沒有解決，會發生什麼？」</li>
+                                            <li>「這個問題是如何影響到您的上級主管最關心的業務指標的？」</li>
+                                            <li>「您個人最希望解決的問題是什麼？」</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-red-700">紅色警訊</h3>
+                                    <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                        <p class="text-red-600">如果客戶承認有問題，但無法清晰描述不解決問題的負面後果，或者認為「維持現狀也可以接受」，那麼他們購買的緊迫性就很低，交易很可能會延遲或停滯。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- C - 擁護者 -->
+            <section id="champion" class="content-section">
+                <div class="card overflow-hidden">
+                    <button class="master-accordion-button p-8">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="meddic-letter mr-4">C</div>
+                                <div>
+                                    <h2 class="text-4xl font-bold text-gray-800">Champion (擁護者)</h2>
+                                    <p class="text-lg text-gray-500">誰在您不在場時，為您而戰？</p>
+                                </div>
+                            </div>
+                            <span class="toggle-icon text-3xl text-gray-400">▼</span>
+                        </div>
+                    </button>
+                    <div class="master-accordion-content">
+                        <div class="px-8 pb-8">
+                            <p class="mb-6">擁護者是您在客戶組織內部的「自己人」。他們是交易成敗的最關鍵因素。他們不僅喜歡您的產品，更有權力、有影響力，並願意為了推動交易成功而付出個人努力。找到並賦能擁護者，是<span class="font-bold text-blue-600">【劇本三：攻克採購委員會】</span>和<span class="font-bold text-blue-600">【劇本五：增長飛輪】</span>的交匯點。</p>
+                            <div class="space-y-6">
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">核心理念：教練 vs. 擁護者</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <p><strong>教練 (Coach)</strong> 會給您提供資訊，告訴您組織內的情況。<br><strong>擁護者 (Champion)</strong> 則會為您採取行動。他們會主動為您安排與經濟買家的會議，會幫您修改對您不利的決策標準，會在內部會議上為您的方案辯護。沒有擁護者，就沒有複雜的B2B交易。</p>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-gray-800">如何測試您的擁護者？</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <p>給他們一個小任務，看他們是否願意並能夠完成。例如：</p>
+                                        <ul class="list-disc list-inside space-y-2 mt-2">
+                                            <li>「為了更好地準備，您能否幫我拿到一份您們內部關於這個專案的規劃文件？」</li>
+                                            <li>「我們需要與您的財務長討論ROI，您能幫我們安排一個15分鐘的會議嗎？」</li>
+                                            <li>「我擔心我們在某個標準上不佔優勢，您能幫忙了解一下這個標準的重要性嗎？」</li>
+                                        </ul>
+                                        <p class="mt-2">如果他們總是能完成您的請求，恭喜您，您找到了一個真正的擁護者。</p>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="font-bold text-xl mb-2 text-red-700">紅色警訊</h3>
+                                    <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                        <p class="text-red-600">如果您在客戶公司裡最熟悉的人，無法或不願為您安排更高級別的會議，或者對您的請求總是說「這很難」、「我試試看」，那他很可能只是一個友善的聯絡人，而不是一個能幫您贏得交易的擁護者。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 總結 -->
+            <section id="summary" class="content-section">
+                <div class="card p-8">
+                    <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">融會貫通：成為MEDDIC銷售架構師</h2>
+                    <p class="text-center text-gray-600 mb-8">MEDDIC不是孤立的元素，而是一個相互關聯的系統。一個強大的擁護者(C)會幫您找到真正的痛點(I)和指標(M)，並帶您見到經濟買家(E)。清晰的指標(M)能幫您影響決策標準(DC)，而了解決策流程(DP)則讓您能按部就班地贏得勝利。</p>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-center">交易資格鑑定清單</h3>
+                        <p class="text-center text-gray-500 mb-6">用以下問題快速評估您的交易健康度。您能清晰回答的問題越多，勝算越大。</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="check-m" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="check-m" class="ml-3 text-gray-700"><strong>M:</strong> 我能量化客戶的痛點，並計算出明確的ROI嗎？</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="check-e" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="check-e" class="ml-3 text-gray-700"><strong>E:</strong> 我是否已經與經濟買家會面，並了解他個人的成功標準？</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="check-dc" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="check-dc" class="ml-3 text-gray-700"><strong>DC:</strong> 我是否了解並影響了客戶的決策標準，使其對我有利？</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="check-dp" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="check-dp" class="ml-3 text-gray-700"><strong>DP:</strong> 我是否清晰地知道從今天到簽約的每一個步驟和時間點？</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="check-i" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="check-i" class="ml-3 text-gray-700"><strong>I:</strong> 我是否找到了驅動這次採購的、不可忽視的業務痛點？</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="check-c" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="check-c" class="ml-3 text-gray-700"><strong>C:</strong> 我是否擁有一個經過驗證的、願意為我採取行動的擁護者？</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const contentSections = document.querySelectorAll('.content-section');
+            const masterAccordions = document.querySelectorAll('.master-accordion-button');
+
+            function switchTab(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                navButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    const targetButton = document.querySelector(`.nav-button[data-target="${targetId}"]`);
+                    if (targetButton) {
+                        targetButton.classList.add('active');
+                    }
+                }
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    switchTab(button.dataset.target);
+                });
+            });
+
+            masterAccordions.forEach(button => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('.toggle-icon');
+
+                button.addEventListener('click', () => {
+                    const isOpened = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    if (isOpened) {
+                        content.style.maxHeight = '0px';
+                        if(icon) icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        if(icon) icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // Initialize
+            switchTab('intro');
+        });
+    </script>
+</body>
+</html>

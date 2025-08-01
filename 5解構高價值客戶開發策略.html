@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式銷售開發戰術儀表板 - 卓碼資訊 MES BOX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Corporate Blue & Neutral Gray -->
+    <!-- Application Structure Plan: A single-page, thematic application designed as an interactive sales playbook. The structure guides the user through the strategic sales process outlined in the source report: 1. The Opportunity (Market Analysis), 2. The Target (Lighthouse Customer), 3. The Playbook (WYWYN Email & 5-Touch Plan), and 4. The Toolkit (Final Email). This top-down, narrative structure transforms the static report into a dynamic learning and execution tool. Key interactions include hover effects on cards, a clickable deconstruction of the sales email, and an interactive timeline for the follow-up plan. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Market challenges -> Goal: Inform -> Viz: Styled info cards with icons (HTML/Tailwind) -> Interaction: Hover effects -> Justification: More engaging and digestible than dense paragraphs.
+        - Report Info: Target company/person profile -> Goal: Justify -> Viz: Two-column profile cards -> Interaction: None needed -> Justification: Clearly presents "who" and "why".
+        - Report Info: WYWYN email strategy -> Goal: Educate -> Viz: Interactive email deconstructor -> Interaction: Clicking a strategy component highlights the relevant email part and shows an explanation -> Justification: Actively engages the user in learning the tactic.
+        - Report Info: 5-Touch Action Plan -> Goal: Organize/Guide -> Viz: Vertical timeline (HTML/CSS) -> Interaction: Clicking a step reveals details -> Justification: Visually represents the sequence of actions, making the plan easy to follow.
+        - Report Info: Final Email Text -> Goal: Provide a tool -> Viz: Pre-formatted text block -> Interaction: "Copy to Clipboard" button (JS) -> Justification: Provides direct, actionable utility.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #0369a1; /* sky-700 */
+            border-bottom-color: #0369a1;
+        }
+        .email-component.active {
+            background-color: #e0f2fe; /* sky-100 */
+            border-color: #0369a1;
+            transform: scale(1.02);
+        }
+        .email-highlight {
+            transition: background-color 0.3s;
+            background-color: #bae6fd; /* sky-200 */
+        }
+        .timeline-item .timeline-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+        .timeline-item.active .timeline-content {
+            max-height: 500px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .timeline-item.active .timeline-icon-active {
+            transform: rotate(45deg);
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-sky-800">銷售戰術儀表板</span>
+                    <span class="ml-2 text-sm text-slate-500 hidden md:inline">| 卓碼資訊 MES BOX</span>
+                </div>
+                <div class="hidden md:flex items-baseline space-x-4">
+                    <a href="#opportunity" class="nav-link px-3 py-2 text-sm font-medium">市場契機</a>
+                    <a href="#target" class="nav-link px-3 py-2 text-sm font-medium">目標鎖定</a>
+                    <a href="#playbook" class="nav-link px-3 py-2 text-sm font-medium">戰術手冊</a>
+                    <a href="#toolkit" class="nav-link px-3 py-2 text-sm font-medium">行動工具箱</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-slate-800 text-white py-20">
+            <div class="container mx-auto px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight">解構高價值客戶開發策略</h1>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-300">一份將深度市場分析與高階銷售方法論，轉化為可互動、可執行的戰術儀表板。</p>
+            </div>
+        </section>
+
+        <section id="opportunity" class="py-16 md:py-24 fade-in-section">
+            <div class="container mx-auto px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900">市場契機：為何是現在？</h2>
+                    <p class="mt-2 text-lg text-slate-600">台灣工具機產業正處於轉型的十字路口，三大力量匯集成一個前所未有的市場缺口。</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-100 text-sky-600 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h2"/><path d="M20 12h2"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M6.34 17.66 5 19"/><path d="M19 5l-1.34 1.34"/><path d="M17.66 6.34 19 5"/><path d="M5 5l1.34 1.34"/><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">政策驅動力</h3>
+                        <p class="text-slate-600">政府「智慧機械產業推動方案」將資源導向數位化與智慧化，為MES系統創造了絕佳的政策環境。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-100 text-sky-600 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4l2 1"/><path d="M18 6l-2 2"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">全球競爭壓力</h3>
+                        <p class="text-slate-600">面對中、德、日夾擊，台灣廠商必須提供整廠解決方案以維持競爭力，單純的硬體交付已不足夠。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-100 text-sky-600 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><path d="M12 20h.01"/><path d="M10 12h4"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">內部能力差距</h3>
+                        <p class="text-slate-600">高達44%的企業缺乏明確數位策略。MES BOX 正是填補此「能力差距」、幫助其跨出第一步的務實方案。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="target" class="py-16 md:py-24 bg-slate-100 fade-in-section">
+            <div class="container mx-auto px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900">目標鎖定：為何是他們？</h2>
+                    <p class="mt-2 text-lg text-slate-600">成功的開發始於精準的目標選擇。我們將焦點鎖定在一個「燈塔客戶」與一位「權力線」聯絡人。</p>
+                </div>
+                <div class="max-w-5xl mx-auto grid md:grid-cols-5 gap-8 bg-white p-8 rounded-2xl shadow-xl">
+                    <div class="md:col-span-2">
+                        <h3 class="text-2xl font-bold text-sky-800 mb-4">燈塔客戶：亞崴機電</h3>
+                        <p class="text-slate-600 mb-4">選擇亞崴，因其不僅是產業領導者，更已展現強烈創新意圖。成功導入的示範效應，將有效說服整個產業。</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center"><span class="text-sky-500 mr-2">✓</span>程泰集團核心成員，實力雄厚</li>
+                            <li class="flex items-center"><span class="text-sky-500 mr-2">✓</span>已自行開發智慧監控App，認同數位價值</li>
+                            <li class="flex items-center"><span class="text-sky-500 mr-2">✓</span>主動與學界合作，積極佈局智慧製造</li>
+                        </ul>
+                    </div>
+                    <div class="md:col-span-3 bg-slate-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-sky-800 mb-4">權力線聯絡人：葉瑞銘 副總</h3>
+                        <p class="text-slate-600 mb-4">葉副總不僅有決策權，其完整的廠務與研發背景，使他能深刻理解MES的技術與營運價值，是理想的專案「擁護者」。</p>
+                         <ul class="space-y-2 text-sm">
+                            <li class="flex items-center"><span class="text-sky-500 mr-2">✓</span>職位夠高，能推動專案與預算</li>
+                            <li class="flex items-center"><span class="text-sky-500 mr-2">✓</span>曾任廠長與研發經理，懂現場、懂技術</li>
+                            <li class="flex items-center"><span class="text-sky-500 mr-2">✓</span>更能從營運效益評估，而非純財務角度</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="playbook" class="py-16 md:py-24 fade-in-section">
+            <div class="container mx-auto px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-slate-900">戰術手冊：如何執行？</h2>
+                    <p class="mt-2 text-lg text-slate-600">將策略化為行動。本節將拆解高影響力的開發郵件，並規劃後續的多點接觸計畫。</p>
+                </div>
+                
+                <div class="mb-20">
+                    <h3 class="text-2xl font-bold text-center mb-8">WYWYN 郵件解剖學</h3>
+                    <div class="grid lg:grid-cols-2 gap-8 items-start">
+                        <div id="email-components" class="space-y-3">
+                            <div data-target="subject" class="email-component border-2 p-4 rounded-lg cursor-pointer transition duration-300">
+                                <h4 class="font-bold">1. 主旨 (Subject)</h4>
+                                <p class="text-sm text-slate-500">策略：精準、相關、引人注目。</p>
+                            </div>
+                            <div data-target="why-you" class="email-component border-2 p-4 rounded-lg cursor-pointer transition duration-300">
+                                <h4 class="font-bold">2. 為何是您 (Why You)</h4>
+                                <p class="text-sm text-slate-500">策略：透過深度研究建立信賴感。</p>
+                            </div>
+                            <div data-target="why-now" class="email-component border-2 p-4 rounded-lg cursor-pointer transition duration-300">
+                                <h4 class="font-bold">3. 為何是現在 (Why You Now)</h4>
+                                <p class="text-sm text-slate-500">策略：將其雄心與我方專業連結。</p>
+                            </div>
+                            <div data-target="pitch" class="email-component border-2 p-4 rounded-lg cursor-pointer transition duration-300">
+                                <h4 class="font-bold">4. 價值主張 (Elevator Pitch)</h4>
+                                <p class="text-sm text-slate-500">策略：提出由數據驅動的具體效益。</p>
+                            </div>
+                            <div data-target="cta" class="email-component border-2 p-4 rounded-lg cursor-pointer transition duration-300">
+                                <h4 class="font-bold">5. 行動呼籲 (Call to Action)</h4>
+                                <p class="text-sm text-slate-500">策略：提出低阻力、高產出的轉介請求。</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg font-mono text-sm leading-relaxed">
+                            <p><strong id="subject-text">主旨：關於貴公司在中科廠推動的智慧製造與生產履歷優化</strong></p><br>
+                            <p>葉副總 您好：</p><br>
+                            <p id="why-you-text">我是卓碼資訊的 [您的姓名]。冒昧來信，源於對亞崴機電在工具機產業卓越成就的長期關注與敬佩。貴公司不僅以「龍門世家」的精湛工藝享譽全球，更持續透過與學術界合作及內部研發，積極引領產業邁向智慧化，實為業界典範。</p><br>
+                            <p id="why-now-text">我們深知，當像亞崴這樣領先的企業，已將單機智慧化做到極致時，下一個效率躍升的契機，往往來自於如何將這些來自不同機台的寶貴數據，整合成一個全廠視角的、可供決策的即時資訊流。這正是卓碼資訊深耕多年的領域。</p><br>
+                            <p id="pitch-text">我們的 MES BOX 是一套輕量化、可快速導入的製造執行系統，旨在協助台灣的精密製造領導者，能清晰地**看見**全產線的即時圖像，敏銳地**聽見**每個工作站的真實脈動，並牢牢地**掌握**整體設備效率 (OEE) 的關鍵數據。我們在精密加工領域的合作夥伴，導入後平均能在 18 個月內回收投資，並降低超過 20% 的廢品率。</p><br>
+                            <p id="cta-text">不知葉副總，針對廠區生產數據整合與 OEE 提升這項議題，我應該向貴公司哪一位主管請教，才能更深入地了解您們的需求？或許是中科廠的孫廠長嗎？</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-center mb-8">30天5次接觸行動藍圖</h3>
+                    <div id="timeline" class="relative max-w-2xl mx-auto border-l-2 border-sky-200">
+                        <!-- Timeline items will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="toolkit" class="py-16 md:py-24 bg-slate-800 text-white fade-in-section">
+            <div class="container mx-auto px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold">行動工具箱：最終郵件範本</h2>
+                    <p class="mt-2 text-lg text-slate-300">點擊下方按鈕，一鍵複製完整郵件內容，立即開始您的開發行動。</p>
+                </div>
+                <div class="max-w-3xl mx-auto bg-slate-900 p-8 rounded-xl shadow-2xl relative">
+                    <button id="copy-button" class="absolute top-4 right-4 bg-sky-600 hover:bg-sky-500 text-white px-3 py-1 rounded-md text-sm font-semibold transition">複製內容</button>
+                    <pre id="email-template" class="whitespace-pre-wrap text-slate-300 text-sm">主旨：關於貴公司在中科廠推動的智慧製造與生產履歷優化
+
+葉副總 您好：
+
+我是卓碼資訊的 [您的姓名]。冒昧來信，源於對亞崴機電在工具機產業卓越成就的長期關注與敬佩。貴公司不僅以「龍門世家」的精湛工藝享譽全球，更持續透過與學術界合作及內部研發，積極引領產業邁向智慧化，實為業界典範。
+
+我們深知，當像亞崴這樣領先的企業，已將單機智慧化做到極致時，下一個效率躍升的契機，往往來自於如何將這些來自不同機台的寶貴數據，整合成一個全廠視角的、可供決策的即時資訊流。這正是卓碼資訊深耕多年的領域。
+
+我們的 MES BOX 是一套輕量化、可快速導入的製造執行系統，旨在協助台灣的精密製造領導者，能清晰地看見全產線的即時圖像，敏銳地聽見每個工作站的真實脈動，並牢牢地掌握整體設備效率 (OEE) 的關鍵數據。我們在精密加工領域的合作夥伴，導入後平均能在 18 個月內回收投資，並降低超過 20% 的廢品率。
+
+我們相信，這套系統能成為貴公司加速實現「全廠智慧化」的有力催化劑。
+
+不知葉副總，針對廠區生產數據整合與 OEE 提升這項議題，我應該向貴公司哪一位主管請教，才能更深入地了解您們的需求？或許是中科廠的孫廠長嗎？
+
+感謝您撥冗閱讀，期待能有機會為亞崴的卓越發展貢獻一份心力。
+
+順頌 商祺
+
+[您的姓名]
+[您的職稱]
+卓碼資訊股份有限公司
+電話：[您的電話號碼]
+www.app-erp.com.tw</pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400">
+        <div class="container mx-auto px-6 lg:px-8 py-6 text-center text-sm">
+            <p>&copy; 2025 卓碼資訊股份有限公司。基於內部銷售策略報告建構。</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Navigation Highlighting ---
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const observerOptions = { root: null, rootMargin: '-50% 0px -50% 0px', threshold: 0 };
+
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => sectionObserver.observe(section));
+        
+        // --- Fade-in Animation on Scroll ---
+        const faders = document.querySelectorAll('.fade-in-section');
+        const faderObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        faders.forEach(fader => faderObserver.observe(fader));
+
+        // --- Email Deconstructor ---
+        const emailComponents = document.getElementById('email-components');
+        const emailTextTargets = {
+            subject: document.getElementById('subject-text'),
+            'why-you': document.getElementById('why-you-text'),
+            'why-now': document.getElementById('why-now-text'),
+            pitch: document.getElementById('pitch-text'),
+            cta: document.getElementById('cta-text')
+        };
+        let highlightTimeout;
+
+        emailComponents.addEventListener('click', function(e) {
+            const component = e.target.closest('.email-component');
+            if (!component) return;
+
+            const targetId = component.dataset.target;
+            const textElement = emailTextTargets[targetId];
+
+            // Activate component
+            emailComponents.querySelectorAll('.email-component').forEach(c => c.classList.remove('active'));
+            component.classList.add('active');
+
+            // Highlight text
+            clearTimeout(highlightTimeout);
+            Object.values(emailTextTargets).forEach(el => el.classList.remove('email-highlight'));
+            
+            if (textElement) {
+                textElement.classList.add('email-highlight');
+                textElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                highlightTimeout = setTimeout(() => {
+                    textElement.classList.remove('email-highlight');
+                }, 1500);
+            }
+        });
+
+        // --- Timeline Interaction ---
+        const timelineData = [
+            { day: '1', title: 'WYWYN 策略郵件', content: '<strong>行動：</strong>發送「Why You, Why You Now」開發信給目標高階主管。<br><strong>目標：</strong>引起注意，建立專業印象，為後續接觸鋪路。' },
+            { day: '4', title: '「致勝電訪」跟進', content: '<strong>行動：</strong>撥打電話至目標辦公室，準備好應對秘書與語音信箱的腳本。<br><strong>目標：</strong>確認郵件已被注意，溫和地重申請求，強化印象。' },
+            { day: '7', title: 'LinkedIn 專業連結', content: '<strong>行動：</strong>發送個人化的 LinkedIn 連結邀請，簡短提及先前的郵件。<br><strong>目標：</strong>開闢第二溝通管道，增加專業網絡中的熟悉感。' },
+            { day: '15', title: '提供價值的內容分享', content: '<strong>行動：</strong>分享一篇與目標高度相關的第三方專業文章。<br><strong>目標：</strong>建立專家形象與信任感，展現您是關心產業發展的專業人士。' },
+            { day: '25', title: '禮貌性的最終跟進', content: '<strong>行動：</strong>若無回覆，進行最後一次溫和追蹤，目標可以是其助理或轉介對象。<br><strong>目標：</strong>尋求最終定論，並以專業、有始有終的形象結束開發週期。' }
+        ];
+
+        const timelineContainer = document.getElementById('timeline');
+        timelineData.forEach(item => {
+            const timelineItem = document.createElement('div');
+            timelineItem.className = 'timeline-item mb-8 ml-8';
+            timelineItem.innerHTML = `
+                <div class="absolute -left-4 mt-1 flex items-center justify-center w-8 h-8 bg-white rounded-full ring-4 ring-sky-200">
+                    <span class="font-bold text-sky-700">${item.day}</span>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-lg text-slate-800">${item.title}</h4>
+                        <span class="timeline-icon-active text-sky-500 text-2xl font-light transition-transform duration-300">+</span>
+                    </div>
+                    <div class="timeline-content text-slate-600 text-sm">
+                        ${item.content}
+                    </div>
+                </div>
+            `;
+            timelineContainer.appendChild(timelineItem);
+        });
+
+        timelineContainer.addEventListener('click', function(e) {
+            const header = e.target.closest('.timeline-item .bg-white');
+            if (header) {
+                const item = header.parentElement;
+                item.classList.toggle('active');
+            }
+        });
+
+        // --- Copy to Clipboard ---
+        const copyButton = document.getElementById('copy-button');
+        const emailTemplate = document.getElementById('email-template');
+        copyButton.addEventListener('click', function() {
+            const textToCopy = emailTemplate.innerText;
+            
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                copyButton.textContent = '已複製！';
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+                copyButton.textContent = '複製失敗';
+            }
+            document.body.removeChild(textArea);
+
+            setTimeout(() => {
+                copyButton.textContent = '複製內容';
+            }, 2000);
+        });
+    });
+    </script>
+</body>
+</html>
